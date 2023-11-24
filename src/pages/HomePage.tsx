@@ -1,4 +1,4 @@
-import AMButton from "components/atoms/AMButton";
+import { MainLayout } from "layouts/MainLayout";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -8,9 +8,8 @@ export function HomePage({}: Props) {
   const { t, i18n } = useTranslation();
 
   return (
-    <div>
-      {t("title")}
-      <AMButton>Publish now</AMButton>
-    </div>
+    <MainLayout>
+      <p>ahihi</p>
+    </MainLayout>
   );
 }

@@ -4,8 +4,12 @@ import { login } from "services/auth.service";
 
 export const loginAction = createAsyncThunk(
   "auth/loginAction",
-  async (payload: LoginReq) => {
-    const response = await login(payload);
+  async (payload: { params: LoginReq; callback?: () => void }) => {
+    const response = await login(payload.params);
+
+    if (response.data.isSuccess) {
+      payload.callback && payload.callback();
+    }
 
     return response.data;
   }

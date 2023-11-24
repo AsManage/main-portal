@@ -17,6 +17,7 @@ import {
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { useDispatch } from "store/store";
 import { loginAction } from "store/auth";
+import { useNavigate } from "react-router-dom";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -26,6 +27,7 @@ export const LoginContainers = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
@@ -40,7 +42,14 @@ export const LoginContainers = () => {
     };
 
   const handleLogin = () => {
-    dispatch(loginAction(info));
+    dispatch(
+      loginAction({
+        params: info,
+        callback: () => {
+          navigate("/");
+        },
+      })
+    );
   };
 
   return (
