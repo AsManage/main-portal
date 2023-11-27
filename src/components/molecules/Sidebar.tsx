@@ -13,30 +13,22 @@ import {
   FlexProps,
   Image,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiLogOut,
-} from "react-icons/fi";
+import { FaBuilding, FaHome } from "react-icons/fa";
+import { IoMenu, IoLogOut } from "react-icons/io5";
 import { IconType } from "react-icons";
-import { ReactText } from "react";
+import { ReactText, useMemo } from "react";
 import { useDispatch } from "store/store";
 import { logout } from "store/auth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  path: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Tenant", icon: FaBuilding, path: "/tenant" },
+  { name: "Organization", icon: FaHome, path: "/organisation" },
 ];
 
 export default function SimpleSidebar({ children }: any) {
@@ -61,9 +53,7 @@ export default function SimpleSidebar({ children }: any) {
       </Drawer>
       {/* mobilenav */}
       <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      <Box ml={{ base: 0, md: 60 }}>{children}</Box>
     </Box>
   );
 }
@@ -96,11 +86,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             ASMANAGE
           </Text>
         </Flex>
-        <FiLogOut fontSize="20px" cursor="pointer" onClick={handleLogout} />
+        <IoLogOut fontSize="20px" cursor="pointer" onClick={handleLogout} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
@@ -111,14 +101,26 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactText;
+  path: string;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isActive = useMemo(() => {
+    return path === `/${location.pathname.split("/")[1]}`;
+  }, [location.pathname, path]);
+
   return (
     <Box
       as="a"
-      href="#"
+      display="block"
+      mb={1}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
+      onClick={() => {
+        navigate(path);
+      }}
     >
       <Flex
         align="center"
@@ -127,6 +129,8 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        bg={isActive ? "purple.400" : "transparent"}
+        color={isActive ? "white" : "black"}
         _hover={{
           bg: "purple.400",
           color: "white",
@@ -169,7 +173,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         variant="outline"
         onClick={onOpen}
         aria-label="open menu"
-        icon={<FiMenu />}
+        icon={<IoMenu />}
       />
       <Flex alignItems="center" ml={2}>
         <Text color="purple.500" fontWeight="bold">

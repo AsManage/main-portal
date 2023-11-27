@@ -1,9 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { AboutPage } from "../pages/AboutPage";
+import { OrganisationPage } from "../pages/OrganisationPage";
 import { LoginPage } from "pages/LoginPage";
 import { HomePage } from "pages/HomePage";
+import { TenantPage } from "pages/TenantPage";
 
 type Props = {};
 
@@ -12,7 +13,8 @@ export function MainRoutes({}: Props) {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="about" element={<AboutPage />} />
+      <Route path="/tenant" element={<TenantPage />} />
+      <Route path="/organisation" element={<OrganisationPage />} />
     </Routes>
   );
 }
