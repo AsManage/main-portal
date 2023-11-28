@@ -16,7 +16,7 @@ export function MainLayout({ children }: Props) {
     (async () => {
       await validateLogin();
     })();
-    if (!accessToken) window.location.href = "/login";
+    if (!accessToken) window.location.href = "/auth";
   }, []);
 
   return <SimpleSidebar>{children}</SimpleSidebar>;

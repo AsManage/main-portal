@@ -5,12 +5,16 @@ import { ResponseType } from "interfaces/reponse.interface";
 
 interface State {
   data: any;
+  emailCached: string;
+  resetTokenCached: string;
 }
 
 const storage = new LocalStorage();
 
 const initialState: State = {
   data: [],
+  emailCached: "",
+  resetTokenCached: "",
 };
 
 const authSlice = createSlice({
@@ -20,7 +24,13 @@ const authSlice = createSlice({
     logout: () => {
       storage.clearStorageItem(storage.availableKey.ACCESS_TOKEN);
       storage.clearStorageItem(storage.availableKey.ACCOUNT_INFO);
-      window.location.href = "/login";
+      window.location.href = "/auth";
+    },
+    setEmailCached: (state, action) => {
+      state.emailCached = action.payload;
+    },
+    setResetTokenCached: (state, action) => {
+      state.resetTokenCached = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -36,5 +46,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setEmailCached, setResetTokenCached } =
+  authSlice.actions;
 export default authSlice.reducer;

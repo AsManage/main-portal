@@ -1,4 +1,4 @@
-import { LoginContainers } from "containers/LoginContainers";
+import { LoginContainers } from "containers/Auth/LoginContainers";
 import React from "react";
 
 type Props = {};
