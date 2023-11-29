@@ -18,7 +18,7 @@ export function NotFoundPage() {
       <Button
         colorScheme="purple"
         onClick={() => {
-          navigate(-1);
+          navigate("/");
         }}
       >
         Go Back
