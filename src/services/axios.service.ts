@@ -26,7 +26,10 @@ centralGW.interceptors.request.use(
     return config;
   },
   (error) => {
-    dispatch(setLoading(false));
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 500);
+
     throw error;
   }
 );
@@ -34,7 +37,9 @@ centralGW.interceptors.request.use(
 // Response interceptor
 centralGW.interceptors.response.use(
   (response) => {
-    dispatch(setLoading(false));
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 500);
     dispatch(
       showToast({
         status: response.data.isSuccess ? "success" : "error",

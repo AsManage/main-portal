@@ -70,9 +70,9 @@ export function TenantInfoContainer({}: Props) {
               icon={MdDateRange}
             />
             <Box display="flex" alignItems="center">
-              <GrStatusGoodSmall fontSize="24px" color="#26d826" />
+              <Box className="circle"></Box>
               <Text
-                ml="6px"
+                ml="12px"
                 fontSize="18px"
                 color="var(--gray-01)"
                 fontWeight="light"

@@ -11,6 +11,7 @@ import { ChangePasswordContainer } from "containers/Auth/ChangePasswordContainer
 import { ForgotPasswordPage } from "pages/auth/ChangePasswordPage";
 import { OrganisationInfoPage } from "pages/organisation/OrganisationInfoPage";
 import { TenantInfoPage } from "pages/tenant/TenantInfoPage";
+import { OrganisationUnitTypePage } from "pages/organisation/OrganisationUnitTypePage";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ export function MainRoutes({}: Props) {
       {/** ORGANISATION ROUTE */}
       <Route path="/organisation" element={<OrganisationPage />}>
         <Route path="" element={<OrganisationInfoPage />} />
+        <Route path="unit-type" element={<OrganisationUnitTypePage />} />
       </Route>
 
       {/** TENANT ROUTE */}
