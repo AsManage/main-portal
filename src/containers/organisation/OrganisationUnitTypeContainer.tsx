@@ -83,7 +83,7 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
   const handleSubmit = async () => {
     let valid = true;
     if (!unitName.trim()) {
-      setUnitNameError("Unit name cannot empty!");
+      setUnitNameError("Organisation Unit Type name cannot empty!");
       valid = false;
     } else if (unitName.trim().length > 100) {
       setUnitNameError("Maximum length is 100!");
@@ -114,7 +114,7 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
   const handleCompleteEdit = async () => {
     let valid = true;
     if (!unitName.trim()) {
-      setUnitNameError("Unit name cannot empty!");
+      setUnitNameError("Organisation Unit Type name cannot empty!");
       valid = false;
     } else if (unitName.trim().length > 100) {
       setUnitNameError("Maximum length is 100!");
@@ -264,7 +264,7 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
             <ModalHeader>Create Organisation Unit Type</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text mb="8px">Unit Name</Text>
+              <Text mb="8px">Organisation Unit Type Name</Text>
               <Input
                 value={unitName}
                 onChange={(e) => {
@@ -302,7 +302,7 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
             <ModalHeader>Edit Organisation Unit Type</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text mb="8px">Unit Name</Text>
+              <Text mb="8px">Organisation Unit Type Name</Text>
               <Input
                 value={unitName}
                 onChange={(e) => {
@@ -341,7 +341,7 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
               </AlertDialogHeader>
 
               <AlertDialogBody>
-                Are you sure? You can't undo this action afterwards.
+                Are you sure to delete? You can't undo this action afterwards.
               </AlertDialogBody>
 
               <AlertDialogFooter>
@@ -359,3 +359,4 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
     </Box>
   );
 };
+

@@ -51,7 +51,7 @@ export const LoginContainers = () => {
     const error = { email: "", password: "" };
     let inValid = false;
     if (!EMAIL_REGEX.test(info.email)) {
-      error.email = "Wrong email format!";
+      error.email = "Invalid email format!";
       inValid = true;
     } else {
       error.email = "";
@@ -155,7 +155,7 @@ export const LoginContainers = () => {
                       navigate("forgot-password");
                     }}
                   >
-                    forgot password?
+                    Forgot password?
                   </Link>
                 </FormHelperText>
               </FormControl>
@@ -181,3 +181,4 @@ export const LoginContainers = () => {
     </Flex>
   );
 };
+

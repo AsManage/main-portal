@@ -34,7 +34,7 @@ export const ForgotPasswordContainer = () => {
 
   const handleSendVerifyCode = async () => {
     if (!EMAIL_REGEX.test(email)) {
-      setEmailError("Wrong email format!");
+      setEmailError("Invalid email format!");
     } else {
       setEmailError("");
       const res = await sendVerifyCode({ email });
@@ -86,7 +86,7 @@ export const ForgotPasswordContainer = () => {
                   />
                   <Input
                     type="email"
-                    placeholder="email address"
+                    placeholder="Email address"
                     value={email}
                     isInvalid={emailError.length > 0}
                     onChange={handleChangeEmail}
@@ -116,9 +116,10 @@ export const ForgotPasswordContainer = () => {
             navigate("/auth");
           }}
         >
-          Go to Login
+          Go to Login page
         </Link>
       </Box>
     </Flex>
   );
 };
+
