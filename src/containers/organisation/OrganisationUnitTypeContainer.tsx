@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Icon,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -184,74 +185,81 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
             Unit Type
           </Button>
         </Box>
-
-        <TableContainer
-          border="1px solid var(--gray-02)"
-          p="12px"
-          borderRadius="6px"
-        >
-          <Table variant="striped" colorScheme="purple" size="sm">
-            <Thead>
-              <Tr>
-                <Th w="100px">ID</Th>
-                <Th>Unit Name</Th>
-                <Th w="50px"></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {listOUType?.map((ele: any) => {
-                return (
-                  <Tr key={ele?.id}>
-                    <Td>{ele?.id}</Td>
-                    <Td>{showData(ele?.name)}</Td>
-                    <Td>
-                      <Icon
-                        cursor="pointer"
-                        as={FaEdit}
-                        fontSize="24px"
-                        color="purple.500"
-                        mr="12px"
-                        onClick={() => {
-                          handleEdit(ele?.id);
-                        }}
-                      />
-                      {/* <Icon
-                        cursor="pointer"
-                        as={MdDeleteForever}
-                        fontSize="24px"
-                        color="red.500"
-                        onClick={() => {
-                          handleOpenDelete(ele?.id);
-                        }}
-                      /> */}
-                    </Td>
+        {listOUType && listOUType.length > 0 ? (
+          <Box>
+            <TableContainer
+              border="1px solid var(--gray-02)"
+              p="12px"
+              borderRadius="6px"
+            >
+              <Table variant="striped" colorScheme="purple" size="sm">
+                <Thead>
+                  <Tr>
+                    <Th w="100px">ID</Th>
+                    <Th>Unit Name</Th>
+                    <Th w="50px"></Th>
                   </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
-        <Box pt={3} display="flex" justifyContent="flex-end">
-          <Select
-            value={limitOUType}
-            onChange={handleChangeLimit}
-            width="100px"
-          >
-            {LIMIT_LIST.map((ele, idx) => {
-              return (
-                <option key={idx} value={ele}>
-                  {ele}
-                </option>
-              );
-            })}
-          </Select>
-          <ResponsivePagination
-            maxWidth={400}
-            current={currentPageOUType}
-            total={Math.ceil(totalOUType / limitOUType)}
-            onPageChange={handleChangeCurrentPage}
-          />
-        </Box>
+                </Thead>
+                <Tbody>
+                  {listOUType?.map((ele: any) => {
+                    return (
+                      <Tr key={ele?.id}>
+                        <Td>{ele?.id}</Td>
+                        <Td>{showData(ele?.name)}</Td>
+                        <Td>
+                          <Icon
+                            cursor="pointer"
+                            as={FaEdit}
+                            fontSize="24px"
+                            color="purple.500"
+                            mr="12px"
+                            onClick={() => {
+                              handleEdit(ele?.id);
+                            }}
+                          />
+                          <Icon
+                            cursor="pointer"
+                            as={MdDeleteForever}
+                            fontSize="24px"
+                            color="red.500"
+                            onClick={() => {
+                              handleOpenDelete(ele?.id);
+                            }}
+                          />
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer>
+            <Box pt={3} display="flex" justifyContent="flex-end">
+              <Select
+                value={limitOUType}
+                onChange={handleChangeLimit}
+                width="100px"
+              >
+                {LIMIT_LIST.map((ele, idx) => {
+                  return (
+                    <option key={idx} value={ele}>
+                      {ele}
+                    </option>
+                  );
+                })}
+              </Select>
+              <ResponsivePagination
+                maxWidth={400}
+                current={currentPageOUType}
+                total={Math.ceil(totalOUType / limitOUType)}
+                onPageChange={handleChangeCurrentPage}
+              />
+            </Box>
+          </Box>
+        ) : (
+          <Box w="300px" height="300px" margin="auto">
+            <Image w="100%" h="auto" src="/images/no-data-found.png" />
+          </Box>
+        )}
         <Modal
           isOpen={isOpen}
           onClose={() => {
