@@ -16,3 +16,19 @@ code {
   font-size: 14px;
   color: rgb(148, 7, 7);
 }
+.TreeNode{
+  display: flex
+}
+
+.TreeNodeToolBar{
+  display: none;
+}
+.typeIconContainer svg{
+  width: 25px;
+  height: 25px;
+}
+
+.caretContainer svg {
+  width: 25px;
+  height: 25px;
+}

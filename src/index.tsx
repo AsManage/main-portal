@@ -7,6 +7,7 @@ import "i18n";
 import "scss/index.scss";
 import { Provider } from "react-redux";
 import { store } from "store/store";
+import "react-folder-tree/dist/style.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

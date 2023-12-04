@@ -9,7 +9,7 @@ import { NotFoundPage } from "pages/error/NotFoundPage";
 import { VerifyCodeContainer } from "containers/Auth/VerifyCodeContainer";
 import { ChangePasswordContainer } from "containers/Auth/ChangePasswordContainer";
 import { ForgotPasswordPage } from "pages/auth/ChangePasswordPage";
-import { OrganisationInfoPage } from "pages/organisation/OrganisationInfoPage";
+import { OrganisationUnitPage } from "pages/organisation/OrganisationUnitPage";
 import { TenantInfoPage } from "pages/tenant/TenantInfoPage";
 import { OrganisationUnitTypePage } from "pages/organisation/OrganisationUnitTypePage";
 
@@ -32,7 +32,7 @@ export function MainRoutes({}: Props) {
       />
       {/** ORGANISATION ROUTE */}
       <Route path="/organisation" element={<OrganisationPage />}>
-        <Route path="" element={<OrganisationInfoPage />} />
+        <Route path="" element={<OrganisationUnitPage />} />
         <Route path="unit-type" element={<OrganisationUnitTypePage />} />
       </Route>
 
