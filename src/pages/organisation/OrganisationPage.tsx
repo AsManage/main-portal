@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaFileInvoice } from "react-icons/fa";
 import { IoInformationCircleSharp } from "react-icons/io5";
+import { FaHome } from "react-icons/fa";
 
 type Props = {};
 
@@ -47,8 +48,8 @@ export function OrganisationPage({}: Props) {
             }}
           >
             <HStack spacing={1}>
-              <IoInformationCircleSharp fontSize="24px" />
-              <Text>Information</Text>
+              <FaHome fontSize="24px" />
+              <Text>Organisation</Text>
             </HStack>
           </Tab>
           <Tab
