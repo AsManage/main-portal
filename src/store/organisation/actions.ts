@@ -1,5 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getListOUnitType, getTenantInfo } from "services/organisation.service";
+import {
+  getListOUnitType,
+  getOrganisationStructural,
+  getTenantInfo,
+} from "services/organisation.service";
 
 export const getTenantInfoAction = createAsyncThunk(
   "auth/getTenantInfoAction",
@@ -14,6 +18,15 @@ export const getListOUnitTypeAction = createAsyncThunk(
   "auth/getListOUnitTypeAction",
   async (payload: { limit: number; page: number }) => {
     const response = await getListOUnitType(payload);
+
+    return response.data;
+  }
+);
+
+export const getStructuralOUAction = createAsyncThunk(
+  "auth/getStructuralOUAction",
+  async () => {
+    const response = await getOrganisationStructural();
     console.log(response.data);
     return response.data;
   }

@@ -16,7 +16,7 @@ import { FaHome } from "react-icons/fa";
 
 type Props = {};
 
-export function OrganisationPage({}: Props) {
+function OrganisationPage({}: Props) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -64,14 +64,11 @@ export function OrganisationPage({}: Props) {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <Outlet />
-          </TabPanel>
-          <TabPanel>
-            <Outlet />
-          </TabPanel>
+          <Outlet />
         </TabPanels>
       </Tabs>
     </MainLayout>
   );
 }
+
+export default React.memo(OrganisationPage);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { OrganisationPage } from "../pages/organisation/OrganisationPage";
+import OrganisationPage from "../pages/organisation/OrganisationPage";
 import { LoginPage } from "pages/auth/LoginPage";
 import { HomePage } from "pages/HomePage";
 import { TenantPage } from "pages/tenant/TenantPage";
@@ -9,13 +9,13 @@ import { NotFoundPage } from "pages/error/NotFoundPage";
 import { VerifyCodeContainer } from "containers/Auth/VerifyCodeContainer";
 import { ChangePasswordContainer } from "containers/Auth/ChangePasswordContainer";
 import { ForgotPasswordPage } from "pages/auth/ChangePasswordPage";
-import { OrganisationUnitPage } from "pages/organisation/OrganisationUnitPage";
+import OrganisationUnitPage from "pages/organisation/OrganisationUnitPage";
 import { TenantInfoPage } from "pages/tenant/TenantInfoPage";
 import { OrganisationUnitTypePage } from "pages/organisation/OrganisationUnitTypePage";
 
 type Props = {};
 
-export function MainRoutes({}: Props) {
+function MainRoutes({}: Props) {
   return (
     <Routes>
       {/** AUTH ROUTE */}
@@ -45,3 +45,5 @@ export function MainRoutes({}: Props) {
     </Routes>
   );
 }
+
+export default React.memo(MainRoutes);

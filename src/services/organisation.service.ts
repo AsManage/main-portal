@@ -34,3 +34,7 @@ export const deleteListOUnitType = async (payload: { typeId: number }) => {
     },
   });
 };
+
+export const getOrganisationStructural = async () => {
+  return await centralGW.get("/organisation/orgUnit");
+};

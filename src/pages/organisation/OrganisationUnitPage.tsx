@@ -1,8 +1,10 @@
-import { OrganisationUnitContainer } from "containers/organisation/OrganisationUnitContainer";
+import OrganisationUnitContainer from "containers/organisation/OrganisationUnitContainer";
 import React from "react";
 
 type Props = {};
 
-export function OrganisationUnitPage({}: Props) {
+function OrganisationUnitPage() {
   return <OrganisationUnitContainer />;
 }
+
+export default React.memo(OrganisationUnitPage);

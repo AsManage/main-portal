@@ -1,6 +1,6 @@
 import { Box, ChakraProvider, Spinner } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
-import { MainRoutes } from "./routes";
+import MainRoutes from "./routes";
 import { useSelector } from "store/store";
 import { commonSelector } from "store/common";
 
