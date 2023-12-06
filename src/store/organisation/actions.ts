@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  addOUnit,
   getListOUnitType,
   getOrganisationStructural,
   getTenantInfo,
@@ -23,11 +24,30 @@ export const getListOUnitTypeAction = createAsyncThunk(
   }
 );
 
+export const getAllListOUnitTypeAction = createAsyncThunk(
+  "auth/getAllListOUnitTypeAction",
+  async () => {
+    const response = await getListOUnitType({ page: 1 });
+
+    return response.data;
+  }
+);
+
 export const getStructuralOUAction = createAsyncThunk(
   "auth/getStructuralOUAction",
   async () => {
     const response = await getOrganisationStructural();
-    console.log(response.data);
+    return response.data;
+  }
+);
+
+export const addOUAction = createAsyncThunk(
+  "auth/addOUAction",
+  async (payload: any) => {
+    const response = await addOUnit(payload);
+    if (response.data.isSuccess) {
+      payload?.callback && payload?.callback();
+    }
     return response.data;
   }
 );

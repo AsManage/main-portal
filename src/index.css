@@ -32,3 +32,10 @@ code {
   width: 25px;
   height: 25px;
 }
+
+.required::after {
+  content: "*";
+  font-size: 20px;
+  line-height: 20px;
+  color: red;
+}

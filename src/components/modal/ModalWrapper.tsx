@@ -31,7 +31,9 @@ export default function ModalWrapper({
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{children}</ModalBody>
+        <ModalBody maxH="90vh" overflow="auto">
+          {children}
+        </ModalBody>
 
         <ModalFooter>
           <Button colorScheme="purple" variant="solid" onClick={onSubmit}>

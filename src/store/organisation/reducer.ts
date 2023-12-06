@@ -1,5 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  addOUAction,
+  getAllListOUnitTypeAction,
   getListOUnitTypeAction,
   getStructuralOUAction,
   getTenantInfoAction,
@@ -54,6 +56,19 @@ const organisationSlice = createSlice({
       getStructuralOUAction.fulfilled,
       (state, action: PayloadAction<ResponseType>) => {
         state.structuralOU = action.payload.result;
+      }
+    );
+    builder.addCase(
+      getAllListOUnitTypeAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        state.listOUType = action.payload.result;
+      }
+    );
+    builder.addCase(
+      addOUAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        if (action.payload?.isSuccess)
+          state.structuralOU = action.payload.result;
       }
     );
   },

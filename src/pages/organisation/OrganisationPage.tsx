@@ -63,7 +63,7 @@ function OrganisationPage({}: Props) {
             </HStack>
           </Tab>
         </TabList>
-        <TabPanels>
+        <TabPanels p="16px">
           <Outlet />
         </TabPanels>
       </Tabs>

@@ -14,6 +14,7 @@ import { showData } from "utils/common";
 type Props = {
   isOpen?: boolean;
   onClose?: () => void;
+  onSubmit?: () => void;
   title?: string;
   children?: React.ReactNode;
 };
@@ -21,6 +22,7 @@ type Props = {
 export function DrawerWrapper({
   isOpen = false,
   onClose = () => {},
+  onSubmit = () => {},
   children,
   title,
 }: Props) {
@@ -37,7 +39,9 @@ export function DrawerWrapper({
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue">Save</Button>
+          <Button colorScheme="purple" onClick={onSubmit}>
+            Save
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

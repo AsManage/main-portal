@@ -38,3 +38,32 @@ export const deleteListOUnitType = async (payload: { typeId: number }) => {
 export const getOrganisationStructural = async () => {
   return await centralGW.get("/organisation/orgUnit");
 };
+
+export const addOUnit = async (payload: {
+  name: string;
+  state: "Active";
+  description: string;
+  areaOfOperation: string;
+  businessFunctionDescription: string;
+  organisationUnitTypeId: string;
+  parentId: string;
+  sortId: string;
+}) => {
+  return await centralGW.post("/organisation/orgUnit", payload);
+};
+
+export const updateOUnit = async (payload: {
+  name: string;
+  state: "Active";
+  description: string;
+  areaOfOperation: string;
+  businessFunctionDescription: string;
+  organisationUnitTypeId: string;
+  ouId: string;
+}) => {
+  return await centralGW.put("/organisation/orgUnit", payload);
+};
+
+export const deleteOUnit = async (payload: { ouId: string }) => {
+  return await centralGW.delete("/organisation/orgUnit", { params: payload });
+};
