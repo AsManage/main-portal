@@ -21,14 +21,7 @@ import { PaperWrapper } from "components/atoms/PaperWrapper";
 import { DrawerWrapper } from "components/drawer/DrawerWrapper";
 import ModalWrapper from "components/modal/ModalWrapper";
 import React, { useEffect, useMemo, useState } from "react";
-import FolderTree, { NodeData } from "react-folder-tree";
-
-import { FaDoorClosed } from "react-icons/fa";
-import { FaDoorOpen } from "react-icons/fa";
-import { RiDoorLockFill } from "react-icons/ri";
-import { TbPoint } from "react-icons/tb";
-import { BsBox } from "react-icons/bs";
-
+import FolderTree from "react-folder-tree";
 import "react-responsive-pagination/themes/classic.css";
 import {
   addOUAction,
@@ -39,6 +32,12 @@ import {
 import { useDispatch, useSelector } from "store/store";
 import { showData } from "utils/common";
 import { deleteOUnit, updateOUnit } from "services/organisation.service";
+import {
+  IoCaretDownCircleOutline,
+  IoCaretForwardCircleOutline,
+  IoPeopleOutline,
+  IoPersonOutline,
+} from "react-icons/io5";
 
 type Props = {};
 
@@ -267,9 +266,11 @@ const OrganisationUnitContainer = () => {
               }
             }}
             iconComponents={{
-              FolderIcon: FaDoorClosed,
-              FolderOpenIcon: FaDoorOpen,
-              FileIcon: BsBox,
+              FolderIcon: IoPeopleOutline,
+              FolderOpenIcon: IoPeopleOutline,
+              FileIcon: IoPersonOutline,
+              CaretRightIcon: IoCaretForwardCircleOutline,
+              CaretDownIcon: IoCaretDownCircleOutline,
             }}
           />
         </Box>

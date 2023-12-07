@@ -11,7 +11,7 @@ import { MainLayout } from "layouts/MainLayout";
 import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaFileInvoice } from "react-icons/fa";
-import { IoInformationCircleSharp } from "react-icons/io5";
+import { IoInformationCircleSharp, IoLocation } from "react-icons/io5";
 import { FaHome } from "react-icons/fa";
 
 type Props = {};
@@ -29,6 +29,8 @@ function OrganisationPage({}: Props) {
   useEffect(() => {
     if (location.pathname.includes("/organisation/unit-type")) {
       handleTabsChange(1);
+    } else if (location.pathname.includes("/organisation/location")) {
+      handleTabsChange(2);
     } else handleTabsChange(0);
   }, [location.pathname]);
 
@@ -60,6 +62,16 @@ function OrganisationPage({}: Props) {
             <HStack spacing={1}>
               <FaFileInvoice fontSize="24px" />
               <Text>Unit Type</Text>
+            </HStack>
+          </Tab>
+          <Tab
+            onClick={() => {
+              navigate("location");
+            }}
+          >
+            <HStack spacing={1}>
+              <IoLocation fontSize="24px" />
+              <Text>Location</Text>
             </HStack>
           </Tab>
         </TabList>

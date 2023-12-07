@@ -12,6 +12,7 @@ import { ForgotPasswordPage } from "pages/auth/ChangePasswordPage";
 import OrganisationUnitPage from "pages/organisation/OrganisationUnitPage";
 import { TenantInfoPage } from "pages/tenant/TenantInfoPage";
 import { OrganisationUnitTypePage } from "pages/organisation/OrganisationUnitTypePage";
+import LocationPage from "pages/organisation/LocationPage";
 
 type Props = {};
 
@@ -34,6 +35,7 @@ function MainRoutes({}: Props) {
       <Route path="/organisation" element={<OrganisationPage />}>
         <Route path="" element={<OrganisationUnitPage />} />
         <Route path="unit-type" element={<OrganisationUnitTypePage />} />
+        <Route path="location" element={<LocationPage />} />
       </Route>
 
       {/** TENANT ROUTE */}
