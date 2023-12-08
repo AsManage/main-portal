@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  addLocationAction,
   addOUAction,
   getAllListOUnitTypeAction,
   getListOUnitTypeAction,
+  getStructuralLocationAction,
   getStructuralOUAction,
   getTenantInfoAction,
 } from "./actions";
@@ -13,6 +15,7 @@ interface State {
   tenantInfo: any;
   listOUType: any;
   structuralOU: any;
+  structuralLocation: any;
   totalOUType: number;
   limitOUType: number;
   currentPageOUType: number;
@@ -22,6 +25,7 @@ const initialState: State = {
   tenantInfo: {},
   listOUType: [],
   structuralOU: [],
+  structuralLocation: [],
   totalOUType: 0,
   limitOUType: LIMIT_LIST[1],
   currentPageOUType: 1,
@@ -69,6 +73,20 @@ const organisationSlice = createSlice({
       (state, action: PayloadAction<ResponseType>) => {
         if (action.payload?.isSuccess)
           state.structuralOU = action.payload.result;
+      }
+    );
+    builder.addCase(
+      getStructuralLocationAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        if (action.payload?.isSuccess)
+          state.structuralLocation = action.payload.result;
+      }
+    );
+    builder.addCase(
+      addLocationAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        if (action.payload?.isSuccess)
+          state.structuralLocation = action.payload.result;
       }
     );
   },

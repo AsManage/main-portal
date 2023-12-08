@@ -41,7 +41,7 @@ export const getOrganisationStructural = async () => {
 
 export const addOUnit = async (payload: {
   name: string;
-  state: "Active";
+  state: string;
   description: string;
   areaOfOperation: string;
   businessFunctionDescription: string;
@@ -54,7 +54,7 @@ export const addOUnit = async (payload: {
 
 export const updateOUnit = async (payload: {
   name: string;
-  state: "Active";
+  state: string;
   description: string;
   areaOfOperation: string;
   businessFunctionDescription: string;
@@ -66,4 +66,40 @@ export const updateOUnit = async (payload: {
 
 export const deleteOUnit = async (payload: { ouId: string }) => {
   return await centralGW.delete("/organisation/orgUnit", { params: payload });
+};
+
+export const getLocationStructural = async () => {
+  return await centralGW.get("/organisation/location");
+};
+
+export const addLocation = async (payload: {
+  name: string;
+  state: string;
+  code: string;
+  description: string;
+  businessFunctionDescription: string;
+  parentId: string;
+  sortId: string;
+}) => {
+  const {
+    businessFunctionDescription,
+    code,
+    description,
+    name,
+    parentId,
+    sortId,
+    state,
+  } = payload;
+
+  return await centralGW.post("/organisation/location", {
+    name,
+    code,
+    state,
+    description,
+    businessFunctionDescription,
+    locationHierarchy: {
+      parentId,
+      sortId,
+    },
+  });
 };
