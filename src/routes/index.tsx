@@ -13,6 +13,9 @@ import OrganisationUnitPage from "pages/organisation/OrganisationUnitPage";
 import { TenantInfoPage } from "pages/tenant/TenantInfoPage";
 import { OrganisationUnitTypePage } from "pages/organisation/OrganisationUnitTypePage";
 import LocationPage from "pages/organisation/LocationPage";
+import SettingPage from "pages/setting/SettingPage";
+import SettingAccountPage from "pages/setting/SettingAccountPage";
+import SettingPermissionPage from "pages/setting/SettingPermissionPage";
 
 type Props = {};
 
@@ -41,6 +44,12 @@ function MainRoutes({}: Props) {
       {/** TENANT ROUTE */}
       <Route path="/business" element={<TenantPage />}>
         <Route path="" element={<TenantInfoPage />} />
+      </Route>
+
+      {/** SETTING ROUTE */}
+      <Route path="/setting" element={<SettingPage />}>
+        <Route path="" element={<SettingAccountPage />} />
+        <Route path="permission" element={<SettingPermissionPage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

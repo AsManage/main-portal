@@ -20,6 +20,7 @@ import { ReactText, useMemo } from "react";
 import { useDispatch } from "store/store";
 import { logout } from "store/auth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IoSettings } from "react-icons/io5";
 
 interface LinkItemProps {
   name: string;
@@ -29,6 +30,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Business", icon: FaBuilding, path: "/business" },
   { name: "Organization", icon: FaHome, path: "/organisation" },
+  { name: "Setting", icon: IoSettings, path: "/setting" },
 ];
 
 export default function SimpleSidebar({ children }: any) {

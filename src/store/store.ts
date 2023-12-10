@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import commonReducer from "./common/reducer";
 import authReducer from "./auth/reducer";
 import organisationReducer from "./organisation/reducer";
+import userReducer from "./user/reducer";
 import {} from "store";
 
 import {
@@ -15,6 +16,7 @@ export const store = configureStore({
     common: commonReducer,
     auth: authReducer,
     organisation: organisationReducer,
+    user: userReducer,
   },
 });
 
@@ -22,6 +24,7 @@ const rootReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
   organisation: organisationReducer,
+  user: userReducer,
 });
 
 export type AppDispatch = typeof store.dispatch;

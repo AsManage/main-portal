@@ -41,6 +41,10 @@ const authSlice = createSlice({
           storage.availableKey.ACCESS_TOKEN,
           action.payload.result.accessToken
         );
+        storage.setStorageItem(
+          storage.availableKey.ACCOUNT_INFO,
+          action.payload.result.userInfo
+        );
       }
     );
   },
