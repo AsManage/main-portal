@@ -30,7 +30,7 @@ import {
   organisationSelector,
 } from "store/organisation";
 import { useDispatch, useSelector } from "store/store";
-import { showData } from "utils/common";
+import { havePermission, showData } from "utils/common";
 import { deleteOUnit, updateOUnit } from "services/organisation.service";
 import {
   IoCaretDownCircleOutline,
@@ -38,6 +38,9 @@ import {
   IoPeopleOutline,
   IoPersonOutline,
 } from "react-icons/io5";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
+import { PERMISSION } from "constants/common";
+import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
 
 type Props = {};
 
@@ -255,40 +258,45 @@ const OrganisationUnitContainer = () => {
   return (
     <Box>
       <PaperWrapper label="Organisation">
-        <Box>
-          <FolderTree
-            data={processData}
-            showCheckbox={false}
-            onNameClick={(e) => {
-              if (!e.nodeData.isRoot) {
-                setSelectedOU(e.nodeData.data);
-                onOpenDrawer();
-              }
-            }}
-            iconComponents={{
-              FolderIcon: IoPeopleOutline,
-              FolderOpenIcon: IoPeopleOutline,
-              FileIcon: IoPersonOutline,
-              CaretRightIcon: IoCaretForwardCircleOutline,
-              CaretDownIcon: IoCaretDownCircleOutline,
-            }}
-          />
-        </Box>
-        <Button
-          colorScheme="purple"
-          position="absolute"
-          top="24px"
-          right="24px"
-          onClick={onOpen}
-        >
-          Create Organisation
-        </Button>
+        <PermissionPageWrapper permission={PERMISSION.VIEW_ORGANISATION_UNIT}>
+          <Box>
+            <FolderTree
+              data={processData}
+              showCheckbox={false}
+              onNameClick={(e) => {
+                if (!e.nodeData.isRoot) {
+                  setSelectedOU(e.nodeData.data);
+                  onOpenDrawer();
+                }
+              }}
+              iconComponents={{
+                FolderIcon: IoPeopleOutline,
+                FolderOpenIcon: IoPeopleOutline,
+                FileIcon: IoPersonOutline,
+                CaretRightIcon: IoCaretForwardCircleOutline,
+                CaretDownIcon: IoCaretDownCircleOutline,
+              }}
+            />
+          </Box>
+        </PermissionPageWrapper>
+        <PermissionWrapper permission={PERMISSION.ADD_ORGANISATION_UNIT}>
+          <Button
+            colorScheme="purple"
+            position="absolute"
+            top="24px"
+            right="24px"
+            onClick={onOpen}
+          >
+            Create Organisation
+          </Button>
+        </PermissionWrapper>
       </PaperWrapper>
       <DrawerWrapper
         title={selectedOU?.name}
         isOpen={isOpenDrawer}
         onSubmit={handleUpdate}
         onClose={onCloseDrawer}
+        isHideSave={havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
       >
         <Flex flexDirection="column" gap="12px">
           <Box>
@@ -298,6 +306,7 @@ const OrganisationUnitContainer = () => {
               isInvalid={selectedOUError.name?.length > 0}
               placeholder="Organisation name"
               size="sm"
+              isDisabled={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
               onChange={(e) => {
                 handleSetFormDataEditValue("name", e.target.value);
               }}
@@ -320,6 +329,7 @@ const OrganisationUnitContainer = () => {
                   e.target.value
                 );
               }}
+              isDisabled={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
               placeholder="Select option"
             >
               {listOUType?.map((ele: any) => {
@@ -343,6 +353,7 @@ const OrganisationUnitContainer = () => {
             <RadioGroup
               colorScheme="purple"
               value={selectedOU?.state}
+              isDisabled={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
               onChange={(e) => {
                 handleSetFormDataEditValue("state", e);
               }}
@@ -357,6 +368,7 @@ const OrganisationUnitContainer = () => {
             <Text mb="8px">Description</Text>
             <Textarea
               value={selectedOU?.description}
+              isDisabled={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
               onChange={(e) => {
                 handleSetFormDataEditValue("description", e.target.value);
               }}
@@ -376,6 +388,7 @@ const OrganisationUnitContainer = () => {
               onChange={(e) => {
                 handleSetFormDataEditValue("areaOfOperation", e.target.value);
               }}
+              isDisabled={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
               placeholder="Select option"
               variant="filled"
             >
@@ -400,13 +413,16 @@ const OrganisationUnitContainer = () => {
                   e.target.value
                 );
               }}
+              isDisabled={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
               placeholder="Business description"
               size="sm"
             />
           </Box>
-          <Button colorScheme="red" onClick={onOpenAlert}>
-            Delete
-          </Button>
+          <PermissionWrapper permission={PERMISSION.DELETE_ORGANISATION_UNIT}>
+            <Button colorScheme="red" onClick={onOpenAlert}>
+              Delete
+            </Button>
+          </PermissionWrapper>
         </Flex>
       </DrawerWrapper>
       <ModalWrapper

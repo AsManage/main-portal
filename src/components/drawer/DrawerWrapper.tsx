@@ -16,6 +16,7 @@ type Props = {
   onClose?: () => void;
   onSubmit?: () => void;
   title?: string;
+  isHideSave?: boolean;
   children?: React.ReactNode;
 };
 
@@ -24,6 +25,7 @@ export function DrawerWrapper({
   onClose = () => {},
   onSubmit = () => {},
   children,
+  isHideSave = false,
   title,
 }: Props) {
   return (
@@ -39,9 +41,11 @@ export function DrawerWrapper({
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="purple" onClick={onSubmit}>
-            Save
-          </Button>
+          {isHideSave && (
+            <Button colorScheme="purple" onClick={onSubmit}>
+              Save
+            </Button>
+          )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

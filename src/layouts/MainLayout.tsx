@@ -1,5 +1,6 @@
 import SimpleSidebar from "components/molecules/Sidebar";
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { validateLogin } from "services/auth.service";
 import { LocalStorage } from "utils/localStorage";
 
@@ -9,6 +10,8 @@ type Props = {
 const storage = new LocalStorage();
 
 export function MainLayout({ children }: Props) {
+  const location = useLocation();
+
   useEffect(() => {
     const accessToken = storage.getStorageItem(
       storage.availableKey.ACCESS_TOKEN
@@ -17,7 +20,7 @@ export function MainLayout({ children }: Props) {
       await validateLogin();
     })();
     if (!accessToken) window.location.href = "/auth";
-  }, []);
+  }, [location]);
 
   return <SimpleSidebar>{children}</SimpleSidebar>;
 }

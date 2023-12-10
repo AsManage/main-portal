@@ -120,7 +120,7 @@ export function SettingPermissionContainer({}: Props) {
                         !closedList.includes(idx) && (
                           <Tr key={permission?.id}>
                             <Td textAlign="left">
-                              {showData(permission?.name)}
+                              {showData(permission?.description)}
                             </Td>
                             <Td textAlign="center">
                               <Checkbox

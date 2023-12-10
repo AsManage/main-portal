@@ -52,6 +52,7 @@ function MainRoutes({}: Props) {
         <Route path="permission" element={<SettingPermissionPage />} />
       </Route>
 
+      <Route path="/error/404" element={<NotFoundPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

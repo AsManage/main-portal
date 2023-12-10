@@ -22,7 +22,6 @@ const storage = new LocalStorage();
 
 export function SettingAccountContainer({}: Props) {
   const userInfo = storage.getStorageItem(storage.availableKey.ACCOUNT_INFO);
-  const {} = userInfo;
 
   return (
     <VStack spacing="24px" w="100%" justifyContent="center" alignItems="center">
