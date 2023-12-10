@@ -13,7 +13,7 @@ import {
   FlexProps,
   Image,
 } from "@chakra-ui/react";
-import { FaBuilding, FaHome } from "react-icons/fa";
+import { FaBuilding, FaHome, FaUserLock } from "react-icons/fa";
 import { IoMenu, IoLogOut } from "react-icons/io5";
 import { IconType } from "react-icons";
 import { ReactText, useMemo } from "react";
@@ -30,6 +30,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Business", icon: FaBuilding, path: "/business" },
   { name: "Organization", icon: FaHome, path: "/organisation" },
+  { name: "Permission", icon: FaUserLock, path: "/permission" },
   { name: "Setting", icon: IoSettings, path: "/setting" },
 ];
 

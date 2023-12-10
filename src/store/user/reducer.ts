@@ -1,13 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { getListSystemPermissionAction } from "./actions";
+import { getListRoleAction, getListSystemPermissionAction } from "./actions";
 import { ResponseType } from "interfaces/reponse.interface";
 
 interface State {
   listPermission: any;
+  listRole: any;
 }
 
 const initialState: State = {
   listPermission: [],
+  listRole: [],
 };
 
 const userSlice = createSlice({
@@ -20,6 +22,12 @@ const userSlice = createSlice({
       (state, action: PayloadAction<ResponseType>) => {
         if (action.payload?.isSuccess)
           state.listPermission = action.payload.result;
+      }
+    );
+    builder.addCase(
+      getListRoleAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        if (action.payload?.isSuccess) state.listRole = action.payload.result;
       }
     );
   },

@@ -40,12 +40,15 @@ centralGW.interceptors.response.use(
     setTimeout(() => {
       dispatch(setLoading(false));
     }, 500);
-    dispatch(
-      showToast({
-        status: response.data.isSuccess ? "success" : "error",
-        message: response.data.message || "",
-      })
-    );
+    if (response.config.method !== "get") {
+      dispatch(
+        showToast({
+          status: response.data.isSuccess ? "success" : "error",
+          message: response.data.message || "",
+        })
+      );
+    }
+
     return response;
   },
   (error) => {
