@@ -15,3 +15,32 @@ export const deleteRole = async (roleId: number) => {
     },
   });
 };
+
+export const createRole = async ({
+  roleName,
+  permissions,
+}: {
+  roleName: string;
+  permissions: number[];
+}) => {
+  return await centralGW.post("/user/role", {
+    roleName,
+    permissionIds: permissions,
+  });
+};
+
+export const updateRole = async ({
+  roleId,
+  roleName,
+  permissions,
+}: {
+  roleId: number;
+  roleName: string;
+  permissions: number[];
+}) => {
+  return await centralGW.put("/user/role", {
+    roleId,
+    roleName,
+    permissionIds: permissions,
+  });
+};

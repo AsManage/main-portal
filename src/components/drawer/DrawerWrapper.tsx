@@ -41,7 +41,7 @@ export function DrawerWrapper({
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          {isHideSave && (
+          {!isHideSave && (
             <Button colorScheme="purple" onClick={onSubmit}>
               Save
             </Button>

@@ -296,7 +296,7 @@ const OrganisationUnitContainer = () => {
         isOpen={isOpenDrawer}
         onSubmit={handleUpdate}
         onClose={onCloseDrawer}
-        isHideSave={havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
+        isHideSave={!havePermission(PERMISSION.EDIT_ORGANISATION_UNIT)}
       >
         <Flex flexDirection="column" gap="12px">
           <Box>

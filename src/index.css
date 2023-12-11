@@ -20,6 +20,10 @@ code {
   display: flex
 }
 
+.TreeNode .displayName{
+  font-size: 18px;
+}
+
 .TreeNodeToolBar{
   display: none;
 }

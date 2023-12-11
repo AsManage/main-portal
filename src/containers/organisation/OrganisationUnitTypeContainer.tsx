@@ -192,12 +192,14 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
               p="12px"
               borderRadius="6px"
             >
-              <Table variant="striped" colorScheme="purple" size="sm">
+              <Table variant="striped" colorScheme="purple" size="md">
                 <Thead>
                   <Tr>
-                    <Th w="100px">ID</Th>
-                    <Th>Unit Name</Th>
-                    <Th w="50px"></Th>
+                    <Th w="100px" fontSize="16px">
+                      ID
+                    </Th>
+                    <Th fontSize="16px">Unit Name</Th>
+                    <Th w="50px" fontSize="16px"></Th>
                   </Tr>
                 </Thead>
                 <Tbody>

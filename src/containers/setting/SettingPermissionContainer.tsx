@@ -34,7 +34,7 @@ export function SettingPermissionContainer({}: Props) {
 
   const handleAddCloseList = (id: number) => {
     if (closedList.includes(id)) {
-      setClosedList(closedList.filter((ele) => ele != id));
+      setClosedList(closedList.filter((ele) => ele !== id));
     } else {
       setClosedList(closedList.concat([id]));
     }
@@ -52,51 +52,51 @@ export function SettingPermissionContainer({}: Props) {
           p="12px"
           borderRadius="6px"
         >
-          <Table colorScheme="purple" size="sm">
+          <Table colorScheme="purple" size="md">
             <Thead>
               <Tr>
-                <Th textAlign="left">Permission</Th>
-                <Th textAlign="center">{showData(userInfo.role)}</Th>
+                <Th textAlign="left" fontSize="16px">
+                  Permission
+                </Th>
+                <Th textAlign="center" fontSize="16px">
+                  {showData(userInfo.role)}
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
               {listPermission?.map((ele: any, idx: number) => {
                 return (
                   <React.Fragment key={idx}>
-                    <Tr>
+                    <Tr
+                      bgColor="purple.400"
+                      cursor="pointer"
+                      onClick={() => {
+                        handleAddCloseList(idx);
+                      }}
+                    >
                       <Td textAlign="left">
-                        <Text key={idx} fontSize="16px" fontWeight="bold">
-                          {showData(
-                            PERMISSION_LABEL_MAPPING[
-                              ele.groupName as keyof typeof PERMISSION_LABEL_MAPPING
-                            ]
-                          )}
-                        </Text>
-                      </Td>
-                      <Td textAlign="center">
                         <Box
                           textAlign="center"
                           margin="auto"
-                          display="inline-block"
-                          cursor="pointer"
+                          display="flex"
+                          alignItems="center"
+                          gap="12px"
                         >
                           {closedList.includes(idx) ? (
-                            <FaPlusSquare
-                              fontSize="18px"
-                              onClick={() => {
-                                handleAddCloseList(idx);
-                              }}
-                            />
+                            <FaPlusSquare color="white" fontSize="18px" />
                           ) : (
-                            <FaMinusSquare
-                              fontSize="18px"
-                              onClick={() => {
-                                handleAddCloseList(idx);
-                              }}
-                            />
+                            <FaMinusSquare color="white" fontSize="18px" />
                           )}
+                          <Text color="white" fontSize="16px" fontWeight="bold">
+                            {showData(
+                              PERMISSION_LABEL_MAPPING[
+                                ele.groupName as keyof typeof PERMISSION_LABEL_MAPPING
+                              ]
+                            )}
+                          </Text>
                         </Box>
                       </Td>
+                      <Td></Td>
                     </Tr>
                     {ele?.permissions?.map((permission: any) => {
                       return (
