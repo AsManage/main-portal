@@ -17,6 +17,7 @@ import SettingPage from "pages/setting/SettingPage";
 import SettingAccountPage from "pages/setting/SettingAccountPage";
 import SettingPermissionPage from "pages/setting/SettingPermissionPage";
 import { PermissionPage } from "pages/permission/PermissionPage";
+import UserPage from "pages/user/UserPage";
 
 type Props = {};
 
@@ -55,6 +56,9 @@ function MainRoutes({}: Props) {
 
       {/** PERMISSION ROUTE */}
       <Route path="/permission" element={<PermissionPage />} />
+
+      {/** USER ROUTE */}
+      <Route path="/user" element={<UserPage />} />
 
       <Route path="/error/404" element={<NotFoundPage />} />
       <Route path="*" element={<NotFoundPage />} />

@@ -10,6 +10,7 @@ export const PERMISSION_LABEL_MAPPING = {
   "organisation-unit-tab": "ORGANISATION UNIT TAB",
   "organisation-unit-type": "ORGANISATION UNIT TYPE TAB",
   "organisation-location": "ORGANISATION LOCATION TAB",
+  permission: "PERMISSION & ROLE",
 };
 
 export const PERMISSION = {
