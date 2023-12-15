@@ -8,7 +8,9 @@ export const loginAction = createAsyncThunk(
     const response = await login(payload.params);
 
     if (response.data.isSuccess) {
-      payload.callback && payload.callback();
+      setTimeout(() => {
+        payload.callback && payload.callback();
+      }, 500);
     }
 
     return response.data;

@@ -21,19 +21,15 @@ import { useDispatch } from "store/store";
 import { logout } from "store/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoSettings } from "react-icons/io5";
+import { havePermission } from "utils/common";
+import { PERMISSION } from "constants/common";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
   path: string;
+  isAllow: boolean;
 }
-const LinkItems: Array<LinkItemProps> = [
-  { name: "Business", icon: FaBuilding, path: "/business" },
-  { name: "Organization", icon: FaHome, path: "/organisation" },
-  { name: "Permission", icon: FaUserLock, path: "/permission" },
-  { name: "User", icon: FaUserFriends, path: "/user" },
-  { name: "Setting", icon: IoSettings, path: "/setting" },
-];
 
 export default function SimpleSidebar({ children }: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,6 +64,33 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const dispatch = useDispatch();
+  const LinkItems: Array<LinkItemProps> = [
+    {
+      name: "Business",
+      icon: FaBuilding,
+      path: "/business",
+      isAllow: havePermission(PERMISSION.BUSINESS),
+    },
+    {
+      name: "Organization",
+      icon: FaHome,
+      path: "/organisation",
+      isAllow: havePermission(PERMISSION.ORGANIZATION),
+    },
+    {
+      name: "Permission",
+      icon: FaUserLock,
+      path: "/permission",
+      isAllow: havePermission(PERMISSION.PERMISSION),
+    },
+    {
+      name: "User",
+      icon: FaUserFriends,
+      path: "/user",
+      isAllow: havePermission(PERMISSION.USER),
+    },
+    { name: "Setting", icon: IoSettings, path: "/setting", isAllow: true },
+  ];
 
   const handleLogout = () => {
     dispatch(logout());
@@ -93,11 +116,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <IoLogOut fontSize="20px" cursor="pointer" onClick={handleLogout} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
-          {link.name}
-        </NavItem>
-      ))}
+      {LinkItems.map(
+        (link) =>
+          link.isAllow && (
+            <NavItem key={link.name} icon={link.icon} path={link.path}>
+              {link.name}
+            </NavItem>
+          )
+      )}
     </Box>
   );
 };

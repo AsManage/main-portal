@@ -12,7 +12,7 @@ export const havePermission = (permission: string) => {
   const userInfo = storage.getStorageItem(storage.availableKey.ACCOUNT_INFO);
   if (userInfo) {
     const { permission: userPermissions } = userInfo;
-    return userPermissions?.includes(permission);
+    return Boolean(userPermissions?.includes(permission));
   }
   return false;
 };

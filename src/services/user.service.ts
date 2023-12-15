@@ -44,3 +44,32 @@ export const updateRole = async ({
     permissionIds: permissions,
   });
 };
+
+export const getListUserPaging = async (payload: {
+  limit?: number;
+  page?: number;
+}) => {
+  return await centralGW.get("/user/info", { params: payload });
+};
+
+export const createUserInTenant = async (payload: {
+  email: string;
+  firstName: string;
+  lastName: string;
+  location: string;
+  city: string;
+  province: string;
+  workingPosition: string;
+  phoneNumber: string;
+  gender: string;
+  status: string;
+  roleId: string;
+}) => {
+  return await centralGW.post("/user/info", payload);
+};
+
+export const deleteUserInTenant = async (payload: { userId: number }) => {
+  return await centralGW.delete("/user/info", {
+    params: { userId: payload.userId },
+  });
+};

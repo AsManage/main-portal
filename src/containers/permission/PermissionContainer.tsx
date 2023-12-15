@@ -25,12 +25,14 @@ import {
   userSelector,
 } from "store/user";
 import { useDispatch, useSelector } from "store/store";
-import { PERMISSION_LABEL_MAPPING } from "constants/common";
+import { PERMISSION, PERMISSION_LABEL_MAPPING } from "constants/common";
 import AlertConfirm from "components/modal/AlertConfirm";
 import { createRole, deleteRole, updateRole } from "services/user.service";
 import ModalWrapper from "components/modal/ModalWrapper";
 import { DrawerWrapper } from "components/drawer/DrawerWrapper";
 import _ from "lodash";
+import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
 
 type Props = {};
 
@@ -212,152 +214,163 @@ export function PermissionContainer({}: Props) {
   return (
     <PaperWrapper label="Permission & Role">
       <Box display="flex" justifyContent="space-between" mb="12px">
-        <Button variant="solid" colorScheme="purple" onClick={onOpenModalAdd}>
-          Create Role
-        </Button>
-        <Box display="flex" alignItems="center" gap="6px">
-          <Text fontWeight="bold">Edit</Text>
-          <Switch
-            colorScheme="purple"
-            checked={toggleEdit}
-            size="md"
-            onChange={() => {
-              setToggleEdit(!toggleEdit);
-            }}
-          />
-        </Box>
+        <PermissionWrapper permission={PERMISSION.ADD_ROLE}>
+          <Button variant="solid" colorScheme="purple" onClick={onOpenModalAdd}>
+            Create Role
+          </Button>
+        </PermissionWrapper>
+
+        <PermissionWrapper permission={PERMISSION.EDIT_ROLE}>
+          <Box display="flex" alignItems="center" gap="6px">
+            <Text fontWeight="bold">Edit</Text>
+            <Switch
+              colorScheme="purple"
+              checked={toggleEdit}
+              size="md"
+              onChange={() => {
+                setToggleEdit(!toggleEdit);
+              }}
+            />
+          </Box>
+        </PermissionWrapper>
       </Box>
-      <TableContainer
-        border="1px solid var(--gray-02)"
-        p="12px"
-        borderRadius="6px"
-      >
-        <Table colorScheme="purple" size="md">
-          <Thead>
-            <Tr>
-              <Th textAlign="left" fontSize="16px">
-                Permission
-              </Th>
-              {listRole?.map((ele: any) => {
+      <PermissionPageWrapper permission={PERMISSION.VIEW_SYSTEM_PERMISSION}>
+        <TableContainer
+          border="1px solid var(--gray-02)"
+          p="12px"
+          borderRadius="6px"
+        >
+          <Table colorScheme="purple" size="md">
+            <Thead>
+              <Tr>
+                <Th textAlign="left" fontSize="16px">
+                  Permission
+                </Th>
+                {listRole?.map((ele: any) => {
+                  return (
+                    <Th key={ele?.id} textAlign="center" verticalAlign="top">
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        gap="6px"
+                        justifyContent="center"
+                      >
+                        <Text fontSize="16px">{ele?.name}</Text>
+                        {toggleEdit && ele?.id !== 0 && (
+                          <Box display="flex" gap="12px">
+                            <FaEdit
+                              cursor="pointer"
+                              fontSize="18px"
+                              color="var(--chakra-colors-purple-500)"
+                              onClick={() => {
+                                setSelectedRole(ele?.id);
+                                const permissionLabel = ele?.permissions;
+                                const keys = _.mapKeys(
+                                  listPermissionIds,
+                                  "label"
+                                );
+                                setRoleInfoEdit({
+                                  name: ele?.name,
+                                  permissions: permissionLabel?.map(
+                                    (ele: any) => {
+                                      if (keys[ele]) return keys[ele].id;
+                                    }
+                                  ),
+                                });
+                                onOpenDrawer();
+                              }}
+                            />
+                            <PermissionWrapper
+                              permission={PERMISSION.DELETE_ROLE}
+                            >
+                              <FaTrash
+                                cursor="pointer"
+                                fontSize="18px"
+                                color="var(--chakra-colors-red-500)"
+                                onClick={() => {
+                                  setSelectedRole(ele?.id);
+                                  onOpen();
+                                }}
+                              />
+                            </PermissionWrapper>
+                          </Box>
+                        )}
+                      </Box>
+                    </Th>
+                  );
+                })}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {listPermission?.map((ele: any, idx: number) => {
                 return (
-                  <Th key={ele?.id} textAlign="center" verticalAlign="top">
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                      gap="6px"
-                      justifyContent="center"
+                  <React.Fragment key={idx}>
+                    <Tr
+                      bgColor="purple.400"
+                      cursor="pointer"
+                      onClick={() => {
+                        handleAddCloseList(idx);
+                      }}
                     >
-                      <Text fontSize="16px">{ele?.name}</Text>
-                      {toggleEdit && ele?.id !== 0 && (
-                        <Box display="flex" gap="12px">
-                          <FaEdit
-                            cursor="pointer"
-                            fontSize="18px"
-                            color="var(--chakra-colors-purple-500)"
-                            onClick={() => {
-                              setSelectedRole(ele?.id);
-                              const permissionLabel = ele?.permissions;
-                              const keys = _.mapKeys(
-                                listPermissionIds,
-                                "label"
-                              );
-                              setRoleInfoEdit({
-                                name: ele?.name,
-                                permissions: permissionLabel?.map(
-                                  (ele: any) => {
-                                    if (keys[ele]) return keys[ele].id;
-                                  }
-                                ),
-                              });
-                              onOpenDrawer();
-                            }}
-                          />
-                          <FaTrash
-                            cursor="pointer"
-                            fontSize="18px"
-                            color="var(--chakra-colors-red-500)"
-                            onClick={() => {
-                              setSelectedRole(ele?.id);
-                              onOpen();
-                            }}
-                          />
+                      <Td textAlign="left">
+                        <Box
+                          textAlign="center"
+                          margin="auto"
+                          display="flex"
+                          alignItems="center"
+                          gap="12px"
+                        >
+                          {closedList.includes(idx) ? (
+                            <FaPlusSquare color="white" fontSize="18px" />
+                          ) : (
+                            <FaMinusSquare color="white" fontSize="18px" />
+                          )}
+                          <Text color="white" fontSize="16px" fontWeight="bold">
+                            {showData(
+                              PERMISSION_LABEL_MAPPING[
+                                ele.groupName as keyof typeof PERMISSION_LABEL_MAPPING
+                              ]
+                            )}
+                          </Text>
                         </Box>
-                      )}
-                    </Box>
-                  </Th>
+                      </Td>
+                      {listRole.map((ele: any) => {
+                        return <Td key={ele.id} textAlign="center"></Td>;
+                      })}
+                    </Tr>
+                    {ele?.permissions?.map((permission: any) => {
+                      return (
+                        !closedList.includes(idx) && (
+                          <Tr key={permission?.id}>
+                            <Td textAlign="left">
+                              {showData(permission?.description)}
+                            </Td>
+                            {listRole.map((ele: any) => {
+                              return (
+                                <Td key={ele.id} textAlign="center">
+                                  <Checkbox
+                                    key={JSON.stringify(listRole)}
+                                    colorScheme="purple"
+                                    disabled
+                                    defaultChecked={ele.permissions?.includes(
+                                      permission?.name
+                                    )}
+                                  />
+                                </Td>
+                              );
+                            })}
+                          </Tr>
+                        )
+                      );
+                    })}
+                  </React.Fragment>
                 );
               })}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {listPermission?.map((ele: any, idx: number) => {
-              return (
-                <React.Fragment key={idx}>
-                  <Tr
-                    bgColor="purple.400"
-                    cursor="pointer"
-                    onClick={() => {
-                      handleAddCloseList(idx);
-                    }}
-                  >
-                    <Td textAlign="left">
-                      <Box
-                        textAlign="center"
-                        margin="auto"
-                        display="flex"
-                        alignItems="center"
-                        gap="12px"
-                      >
-                        {closedList.includes(idx) ? (
-                          <FaPlusSquare color="white" fontSize="18px" />
-                        ) : (
-                          <FaMinusSquare color="white" fontSize="18px" />
-                        )}
-                        <Text color="white" fontSize="16px" fontWeight="bold">
-                          {showData(
-                            PERMISSION_LABEL_MAPPING[
-                              ele.groupName as keyof typeof PERMISSION_LABEL_MAPPING
-                            ]
-                          )}
-                        </Text>
-                      </Box>
-                    </Td>
-                    {listRole.map((ele: any) => {
-                      return <Td key={ele.id} textAlign="center"></Td>;
-                    })}
-                  </Tr>
-                  {ele?.permissions?.map((permission: any) => {
-                    return (
-                      !closedList.includes(idx) && (
-                        <Tr key={permission?.id}>
-                          <Td textAlign="left">
-                            {showData(permission?.description)}
-                          </Td>
-                          {listRole.map((ele: any) => {
-                            return (
-                              <Td key={ele.id} textAlign="center">
-                                <Checkbox
-                                  key={JSON.stringify(listRole)}
-                                  colorScheme="purple"
-                                  disabled
-                                  defaultChecked={ele.permissions?.includes(
-                                    permission?.name
-                                  )}
-                                />
-                              </Td>
-                            );
-                          })}
-                        </Tr>
-                      )
-                    );
-                  })}
-                </React.Fragment>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </PermissionPageWrapper>
       <AlertConfirm
         isOpen={isOpen}
         onClose={onClose}

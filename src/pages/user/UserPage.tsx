@@ -2,7 +2,7 @@ import { HStack, Tab, TabList, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import { MainLayout } from "layouts/MainLayout";
 import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FaFileInvoice, FaUser } from "react-icons/fa";
+import { FaFileInvoice, FaUser, FaUserPlus } from "react-icons/fa";
 import { FaHome, FaUniversalAccess } from "react-icons/fa";
 
 type Props = {};
@@ -18,7 +18,7 @@ function UserPage({}: Props) {
   };
 
   useEffect(() => {
-    if (location.pathname.includes("/setting/permission")) {
+    if (location.pathname.includes("/user/create")) {
       handleTabsChange(1);
     } else handleTabsChange(0);
   }, [location.pathname]);
@@ -43,16 +43,16 @@ function UserPage({}: Props) {
               <Text>List User</Text>
             </HStack>
           </Tab>
-          {/* <Tab
+          <Tab
             onClick={() => {
-              navigate("permission");
+              navigate("create");
             }}
           >
             <HStack spacing={1}>
-              <FaUniversalAccess fontSize="24px" />
-              <Text>Create</Text>
+              <FaUserPlus fontSize="24px" />
+              <Text>Create user</Text>
             </HStack>
-          </Tab> */}
+          </Tab>
         </TabList>
         <TabPanels p="16px">
           <Outlet />

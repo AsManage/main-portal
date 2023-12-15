@@ -28,9 +28,12 @@ import {
   getStructuralLocationAction,
   organisationSelector,
 } from "store/organisation";
-import { showData } from "utils/common";
+import { havePermission, showData } from "utils/common";
 import ModalWrapper from "components/modal/ModalWrapper";
 import { DrawerWrapper } from "components/drawer/DrawerWrapper";
+import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
+import { PERMISSION } from "constants/common";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
 
 type Props = {};
 
@@ -178,39 +181,45 @@ const LocationContainer = () => {
     <Box>
       <PaperWrapper label="Location">
         <Box>
-          <FolderTree
-            data={processData}
-            showCheckbox={false}
-            onNameClick={(e) => {
-              if (!e.nodeData.isRoot) {
-                setSelectedOU(e.nodeData.data);
-                onOpenDrawer();
-              }
-            }}
-            iconComponents={{
-              FolderIcon: FaRegBuilding,
-              FolderOpenIcon: FaRegBuilding,
-              FileIcon: TbDoor,
-              CaretRightIcon: IoCaretForwardCircleOutline,
-              CaretDownIcon: IoCaretDownCircleOutline,
-            }}
-          />
+          <PermissionPageWrapper
+            permission={PERMISSION.VIEW_ORGANISATION_LOCATION}
+          >
+            <FolderTree
+              data={processData}
+              showCheckbox={false}
+              onNameClick={(e) => {
+                if (!e.nodeData.isRoot) {
+                  setSelectedOU(e.nodeData.data);
+                  onOpenDrawer();
+                }
+              }}
+              iconComponents={{
+                FolderIcon: FaRegBuilding,
+                FolderOpenIcon: FaRegBuilding,
+                FileIcon: TbDoor,
+                CaretRightIcon: IoCaretForwardCircleOutline,
+                CaretDownIcon: IoCaretDownCircleOutline,
+              }}
+            />
+          </PermissionPageWrapper>
         </Box>
-        <Button
-          colorScheme="purple"
-          position="absolute"
-          top="24px"
-          right="24px"
-          onClick={onOpen}
-        >
-          Create Location
-        </Button>
+        <PermissionWrapper permission={PERMISSION.ADD_ORGANISATION_LOCATION}>
+          <Button
+            colorScheme="purple"
+            position="absolute"
+            top="24px"
+            right="24px"
+            onClick={onOpen}
+          >
+            Create Location
+          </Button>
+        </PermissionWrapper>
       </PaperWrapper>
       <DrawerWrapper
         title={selectedOU?.name}
         isOpen={isOpenDrawer}
-        // onSubmit={handleUpdate}
         onClose={onCloseDrawer}
+        isHideSave={!havePermission(PERMISSION.EDIT_ORGANISATION_LOCATION)}
       >
         <Flex direction="column" gap="12px">
           <Box>
@@ -370,7 +379,11 @@ const LocationContainer = () => {
               }}
             />
           </Box>
-          <Button colorScheme="red">Delete</Button>
+          <PermissionWrapper
+            permission={PERMISSION.DELETE_ORGANISATION_LOCATION}
+          >
+            <Button colorScheme="red">Delete</Button>
+          </PermissionWrapper>
         </Flex>
       </DrawerWrapper>
       <ModalWrapper

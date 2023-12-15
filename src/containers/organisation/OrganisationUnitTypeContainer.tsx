@@ -41,7 +41,7 @@ import { showData } from "utils/common";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
 import { MdDeleteForever } from "react-icons/md";
-import { LIMIT_LIST } from "constants/common";
+import { LIMIT_LIST, PERMISSION } from "constants/common";
 import { FaEdit } from "react-icons/fa";
 
 import { IoMdAdd } from "react-icons/io";
@@ -50,6 +50,8 @@ import {
   deleteListOUnitType,
   updateListOUnitType,
 } from "services/organisation.service";
+import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
 
 type Props = {};
 
@@ -176,86 +178,104 @@ export const OrganisationUnitTypeContainer = (props: Props) => {
     <Box>
       <PaperWrapper label="Organisation Unit Type">
         <Box textAlign="right" mb="12px">
-          <Button
-            leftIcon={<IoMdAdd fontSize="24px" />}
-            colorScheme="purple"
-            variant="outline"
-            onClick={onOpen}
-          >
-            Unit Type
-          </Button>
+          <PermissionWrapper permission={PERMISSION.ADD_ORGANISATION_UNIT_TYPE}>
+            <Button
+              leftIcon={<IoMdAdd fontSize="24px" />}
+              colorScheme="purple"
+              variant="outline"
+              onClick={onOpen}
+            >
+              Unit Type
+            </Button>
+          </PermissionWrapper>
         </Box>
         {listOUType && listOUType.length > 0 ? (
           <Box>
-            <TableContainer
-              border="1px solid var(--gray-02)"
-              p="12px"
-              borderRadius="6px"
+            <PermissionPageWrapper
+              permission={PERMISSION.VIEW_ORGANISATION_UNIT_TYPE}
             >
-              <Table variant="striped" colorScheme="purple" size="md">
-                <Thead>
-                  <Tr>
-                    <Th w="100px" fontSize="16px">
-                      ID
-                    </Th>
-                    <Th fontSize="16px">Unit Name</Th>
-                    <Th w="50px" fontSize="16px"></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {listOUType?.map((ele: any) => {
+              <TableContainer
+                border="1px solid var(--gray-02)"
+                p="12px"
+                borderRadius="6px"
+              >
+                <Table variant="striped" colorScheme="purple" size="md">
+                  <Thead>
+                    <Tr>
+                      <Th w="100px" fontSize="16px">
+                        ID
+                      </Th>
+                      <Th fontSize="16px">Unit Name</Th>
+                      <Th w="50px" fontSize="16px"></Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {listOUType?.map((ele: any) => {
+                      return (
+                        <Tr key={ele?.id}>
+                          <Td>{ele?.id}</Td>
+                          <Td>{showData(ele?.name)}</Td>
+                          <Td>
+                            <PermissionWrapper
+                              permission={
+                                PERMISSION.EDIT_ORGANISATION_UNIT_TYPE
+                              }
+                            >
+                              <Icon
+                                cursor="pointer"
+                                as={FaEdit}
+                                fontSize="24px"
+                                color="purple.500"
+                                mr="12px"
+                                onClick={() => {
+                                  handleEdit(ele?.id);
+                                }}
+                              />
+                            </PermissionWrapper>
+                            <PermissionWrapper
+                              permission={
+                                PERMISSION.DELETE_ORGANISATION_UNIT_TYPE
+                              }
+                            >
+                              <Icon
+                                cursor="pointer"
+                                as={MdDeleteForever}
+                                fontSize="24px"
+                                color="red.500"
+                                onClick={() => {
+                                  handleOpenDelete(ele?.id);
+                                }}
+                              />
+                            </PermissionWrapper>
+                          </Td>
+                        </Tr>
+                      );
+                    })}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <Box pt={3} display="flex" justifyContent="flex-end">
+                <Select
+                  value={limitOUType}
+                  onChange={handleChangeLimit}
+                  width="100px"
+                >
+                  {LIMIT_LIST.map((ele, idx) => {
                     return (
-                      <Tr key={ele?.id}>
-                        <Td>{ele?.id}</Td>
-                        <Td>{showData(ele?.name)}</Td>
-                        <Td>
-                          <Icon
-                            cursor="pointer"
-                            as={FaEdit}
-                            fontSize="24px"
-                            color="purple.500"
-                            mr="12px"
-                            onClick={() => {
-                              handleEdit(ele?.id);
-                            }}
-                          />
-                          <Icon
-                            cursor="pointer"
-                            as={MdDeleteForever}
-                            fontSize="24px"
-                            color="red.500"
-                            onClick={() => {
-                              handleOpenDelete(ele?.id);
-                            }}
-                          />
-                        </Td>
-                      </Tr>
+                      <option key={idx} value={ele}>
+                        {ele}
+                      </option>
                     );
                   })}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <Box pt={3} display="flex" justifyContent="flex-end">
-              <Select
-                value={limitOUType}
-                onChange={handleChangeLimit}
-                width="100px"
-              >
-                {LIMIT_LIST.map((ele, idx) => {
-                  return (
-                    <option key={idx} value={ele}>
-                      {ele}
-                    </option>
-                  );
-                })}
-              </Select>
-              <ResponsivePagination
-                maxWidth={400}
-                current={currentPageOUType}
-                total={Math.ceil(totalOUType / limitOUType)}
-                onPageChange={handleChangeCurrentPage}
-              />
-            </Box>
+                </Select>
+                <ResponsivePagination
+                  maxWidth={400}
+                  current={currentPageOUType}
+                  total={Math.ceil(totalOUType / limitOUType)}
+                  onPageChange={handleChangeCurrentPage}
+                />
+              </Box>
+            </PermissionPageWrapper>
           </Box>
         ) : (
           <Box w="300px" height="300px" margin="auto">
