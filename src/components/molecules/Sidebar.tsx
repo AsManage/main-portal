@@ -12,11 +12,21 @@ import {
   BoxProps,
   FlexProps,
   Image,
+  Collapse,
 } from "@chakra-ui/react";
-import { FaBuilding, FaHome, FaUserFriends, FaUserLock } from "react-icons/fa";
-import { IoMenu, IoLogOut } from "react-icons/io5";
+import {
+  FaBoxOpen,
+  FaBuilding,
+  FaChevronDown,
+  FaFileInvoice,
+  FaHome,
+  FaNetworkWired,
+  FaUserFriends,
+  FaUserLock,
+} from "react-icons/fa";
+import { IoMenu, IoLogOut, IoLocation } from "react-icons/io5";
 import { IconType } from "react-icons";
-import { ReactText, useMemo } from "react";
+import { Fragment, ReactText, useMemo, useState } from "react";
 import { useDispatch } from "store/store";
 import { logout } from "store/auth";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -26,9 +36,10 @@ import { PERMISSION } from "constants/common";
 
 interface LinkItemProps {
   name: string;
-  icon: IconType;
+  icon?: IconType;
   path: string;
   isAllow: boolean;
+  children?: LinkItemProps[];
 }
 
 export default function SimpleSidebar({ children }: any) {
@@ -76,6 +87,26 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       icon: FaHome,
       path: "/organisation",
       isAllow: havePermission(PERMISSION.ORGANIZATION),
+      children: [
+        {
+          name: "Structural",
+          icon: FaNetworkWired,
+          path: "/organisation",
+          isAllow: havePermission(PERMISSION.ACCESS_ORGANISATION_UNIT_TAB),
+        },
+        {
+          name: "Unit Type",
+          icon: FaFileInvoice,
+          path: "/organisation/unit-type",
+          isAllow: havePermission(PERMISSION.ACCESS_ORGANISATION_UNIT_TYPE_TAB),
+        },
+        {
+          name: "Location",
+          icon: IoLocation,
+          path: "/organisation/location",
+          isAllow: havePermission(PERMISSION.ACCESS_ORGANISATION_LOCATION_TAB),
+        },
+      ],
     },
     {
       name: "Permission",
@@ -89,8 +120,23 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       path: "/user",
       isAllow: havePermission(PERMISSION.USER),
     },
+    {
+      name: "Asset",
+      icon: FaBoxOpen,
+      path: "/asset",
+      isAllow: havePermission(PERMISSION.USER),
+    },
     { name: "Setting", icon: IoSettings, path: "/setting", isAllow: true },
   ];
+  const [closeList, setCloseList] = useState<string[]>([]);
+
+  const handleAddCloseList = (id: string) => () => {
+    if (closeList.includes(id)) {
+      setCloseList(closeList.filter((ele) => ele !== id));
+    } else {
+      setCloseList(closeList.concat([id]));
+    }
+  };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -119,9 +165,40 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {LinkItems.map(
         (link) =>
           link.isAllow && (
-            <NavItem key={link.name} icon={link.icon} path={link.path}>
-              {link.name}
-            </NavItem>
+            <Fragment key={link.name}>
+              <NavItem
+                icon={link.icon}
+                path={
+                  link.children && link.children.length > 0 ? "" : link.path
+                }
+                isOpen={!closeList.includes(link.name)}
+                haveChild={link.children && link.children.length > 0}
+                onClick={handleAddCloseList(link.name)}
+              >
+                {link.name}
+              </NavItem>
+              {link.children && link.children.length > 0 && (
+                <Collapse in={!closeList.includes(link.name)} animateOpacity>
+                  <Box bg="#f2f2f2" py="16px">
+                    {link.children?.map((child) => {
+                      return (
+                        child.isAllow && (
+                          <NavItem
+                            key={child.name}
+                            icon={child.icon}
+                            path={child.path}
+                            p="10px"
+                            paddingLeft="32px"
+                          >
+                            {child.name}
+                          </NavItem>
+                        )
+                      );
+                    })}
+                  </Box>
+                </Collapse>
+              )}
+            </Fragment>
           )
       )}
     </Box>
@@ -129,16 +206,25 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 interface NavItemProps extends FlexProps {
-  icon: IconType;
+  icon?: IconType;
   children: ReactText;
-  path: string;
+  path?: string;
+  isOpen?: boolean;
+  haveChild?: boolean;
 }
-const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
+const NavItem = ({
+  icon,
+  children,
+  path,
+  haveChild,
+  isOpen,
+  ...rest
+}: NavItemProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const isActive = useMemo(() => {
-    return path === `/${location.pathname.split("/")[1]}`;
+    return path && path === `${location.pathname}`;
   }, [location.pathname, path]);
 
   return (
@@ -149,7 +235,7 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
       onClick={() => {
-        navigate(path);
+        !haveChild && path && navigate(path);
       }}
     >
       <Flex
@@ -158,6 +244,7 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
         mx="4"
         borderRadius="lg"
         role="group"
+        position="relative"
         cursor="pointer"
         bg={isActive ? "purple.400" : "transparent"}
         color={isActive ? "white" : "black"}
@@ -178,6 +265,16 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
           />
         )}
         {children}
+        {haveChild && (
+          <FaChevronDown
+            fontSize="16"
+            style={{
+              transform: `rotate(${isOpen ? 180 : 0}deg)`,
+              position: "absolute",
+              right: "16px",
+            }}
+          />
+        )}
       </Flex>
     </Box>
   );
