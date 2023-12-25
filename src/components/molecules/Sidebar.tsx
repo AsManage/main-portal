@@ -26,13 +26,15 @@ import {
 } from "react-icons/fa";
 import { IoMenu, IoLogOut, IoLocation } from "react-icons/io5";
 import { IconType } from "react-icons";
-import { Fragment, ReactText, useMemo, useState } from "react";
-import { useDispatch } from "store/store";
+import React, { Fragment, ReactText, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "store/store";
 import { logout } from "store/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoSettings } from "react-icons/io5";
 import { havePermission } from "utils/common";
 import { PERMISSION } from "constants/common";
+import { TbPointFilled } from "react-icons/tb";
+import { commonSelector, setClosedList } from "store/common";
 
 interface LinkItemProps {
   name: string;
@@ -42,10 +44,14 @@ interface LinkItemProps {
   children?: LinkItemProps[];
 }
 
-export default function SimpleSidebar({ children }: any) {
+function SimpleSidebar({ children }: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box
+      minH="100vh"
+      overflow="auto"
+      bg={useColorModeValue("gray.100", "gray.900")}
+    >
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -69,6 +75,8 @@ export default function SimpleSidebar({ children }: any) {
   );
 }
 
+export default React.memo(SimpleSidebar);
+
 interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
@@ -84,25 +92,22 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     },
     {
       name: "Organization",
-      icon: FaHome,
+      icon: FaNetworkWired,
       path: "/organisation",
       isAllow: havePermission(PERMISSION.ORGANIZATION),
       children: [
         {
           name: "Structural",
-          icon: FaNetworkWired,
           path: "/organisation",
           isAllow: havePermission(PERMISSION.ACCESS_ORGANISATION_UNIT_TAB),
         },
         {
           name: "Unit Type",
-          icon: FaFileInvoice,
           path: "/organisation/unit-type",
           isAllow: havePermission(PERMISSION.ACCESS_ORGANISATION_UNIT_TYPE_TAB),
         },
         {
           name: "Location",
-          icon: IoLocation,
           path: "/organisation/location",
           isAllow: havePermission(PERMISSION.ACCESS_ORGANISATION_LOCATION_TAB),
         },
@@ -119,22 +124,53 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       icon: FaUserFriends,
       path: "/user",
       isAllow: havePermission(PERMISSION.USER),
+      children: [
+        {
+          name: "List User",
+          path: "/user",
+          isAllow: havePermission(PERMISSION.ACCESS_USER_LIST),
+        },
+      ],
     },
     {
       name: "Asset",
       icon: FaBoxOpen,
       path: "/asset",
       isAllow: havePermission(PERMISSION.USER),
+      children: [
+        {
+          name: "List Asset",
+          path: "/asset",
+          isAllow: true,
+        },
+      ],
     },
-    { name: "Setting", icon: IoSettings, path: "/setting", isAllow: true },
+    {
+      name: "Setting",
+      icon: IoSettings,
+      path: "/setting",
+      isAllow: true,
+      children: [
+        {
+          name: "Account",
+          path: "/setting",
+          isAllow: true,
+        },
+        {
+          name: "Permission",
+          path: "/setting/permission",
+          isAllow: true,
+        },
+      ],
+    },
   ];
-  const [closeList, setCloseList] = useState<string[]>([]);
+  const { closedList } = useSelector(commonSelector);
 
   const handleAddCloseList = (id: string) => () => {
-    if (closeList.includes(id)) {
-      setCloseList(closeList.filter((ele) => ele !== id));
+    if (closedList.includes(id)) {
+      dispatch(setClosedList(closedList.filter((ele) => ele !== id)));
     } else {
-      setCloseList(closeList.concat([id]));
+      dispatch(setClosedList(closedList.concat([id])));
     }
   };
 
@@ -162,45 +198,47 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <IoLogOut fontSize="20px" cursor="pointer" onClick={handleLogout} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map(
-        (link) =>
-          link.isAllow && (
-            <Fragment key={link.name}>
-              <NavItem
-                icon={link.icon}
-                path={
-                  link.children && link.children.length > 0 ? "" : link.path
-                }
-                isOpen={!closeList.includes(link.name)}
-                haveChild={link.children && link.children.length > 0}
-                onClick={handleAddCloseList(link.name)}
-              >
-                {link.name}
-              </NavItem>
-              {link.children && link.children.length > 0 && (
-                <Collapse in={!closeList.includes(link.name)} animateOpacity>
-                  <Box bg="#f2f2f2" py="16px">
-                    {link.children?.map((child) => {
-                      return (
-                        child.isAllow && (
-                          <NavItem
-                            key={child.name}
-                            icon={child.icon}
-                            path={child.path}
-                            p="10px"
-                            paddingLeft="32px"
-                          >
-                            {child.name}
-                          </NavItem>
-                        )
-                      );
-                    })}
-                  </Box>
-                </Collapse>
-              )}
-            </Fragment>
-          )
-      )}
+      <Box overflow="auto" h="calc(100% - 60px)">
+        {LinkItems.map(
+          (link) =>
+            link.isAllow && (
+              <Fragment key={link.name}>
+                <NavItem
+                  icon={link.icon}
+                  path={
+                    link.children && link.children.length > 0 ? "" : link.path
+                  }
+                  isOpen={!closedList.includes(link.name)}
+                  haveChild={link.children && link.children.length > 0}
+                  onClick={handleAddCloseList(link.name)}
+                >
+                  {link.name}
+                </NavItem>
+                {link.children && link.children.length > 0 && (
+                  <Collapse in={!closedList.includes(link.name)} animateOpacity>
+                    <Box bg="#f2f2f2" py="16px" mb="6px">
+                      {link.children?.map((child) => {
+                        return (
+                          child.isAllow && (
+                            <NavItem
+                              key={child.name}
+                              icon={TbPointFilled}
+                              path={child.path}
+                              p="10px"
+                              paddingLeft="32px"
+                            >
+                              {child.name}
+                            </NavItem>
+                          )
+                        );
+                      })}
+                    </Box>
+                  </Collapse>
+                )}
+              </Fragment>
+            )
+        )}
+      </Box>
     </Box>
   );
 };
@@ -272,6 +310,7 @@ const NavItem = ({
               transform: `rotate(${isOpen ? 180 : 0}deg)`,
               position: "absolute",
               right: "16px",
+              transition: "transform 0.3s",
             }}
           />
         )}

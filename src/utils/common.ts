@@ -16,3 +16,11 @@ export const havePermission = (permission: string) => {
   }
   return false;
 };
+
+export const formatPrice = (price: number) => {
+  const USDollar = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  return USDollar.format(price);
+};

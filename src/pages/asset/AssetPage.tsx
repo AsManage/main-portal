@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 
 type Props = {};
 
-function UserPage({}: Props) {
+function AssetPage({}: Props) {
   return (
     <MainLayout>
       <Box p="12px">
@@ -15,4 +15,4 @@ function UserPage({}: Props) {
   );
 }
 
-export default React.memo(UserPage);
+export default React.memo(AssetPage);

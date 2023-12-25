@@ -21,21 +21,9 @@ export function TenantPage({}: Props) {
 
   return (
     <MainLayout>
-      <Tabs size="lg" variant="line" colorScheme="purple">
-        <TabList bg="white">
-          <Tab>
-            <HStack spacing={1}>
-              <IoInformationCircleSharp fontSize="24px" />
-              <Text>Information</Text>
-            </HStack>
-          </Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Outlet />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+      <Box p="12px">
+        <Outlet />
+      </Box>
     </MainLayout>
   );
 }

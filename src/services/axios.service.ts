@@ -28,7 +28,7 @@ centralGW.interceptors.request.use(
   (error) => {
     setTimeout(() => {
       dispatch(setLoading(false));
-    }, 500);
+    }, 200);
 
     throw error;
   }
@@ -39,7 +39,7 @@ centralGW.interceptors.response.use(
   (response) => {
     setTimeout(() => {
       dispatch(setLoading(false));
-    }, 500);
+    }, 200);
     if (response.config.method !== "get") {
       dispatch(
         showToast({

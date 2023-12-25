@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface State {
   isOpenMenu: boolean;
+  closedList: string[];
   isLoading: boolean;
 }
 
@@ -17,6 +18,7 @@ const { toast } = createStandaloneToast();
 const initialState: State = {
   isOpenMenu: false,
   isLoading: false,
+  closedList: [],
 };
 
 const commonSlice = createSlice({
@@ -41,8 +43,12 @@ const commonSlice = createSlice({
           variant: "left-accent",
         });
     },
+    setClosedList(state, action) {
+      state.closedList = action.payload;
+    },
   },
 });
 
-export const { toggleMenu, setLoading, showToast } = commonSlice.actions;
+export const { toggleMenu, setLoading, showToast, setClosedList } =
+  commonSlice.actions;
 export default commonSlice.reducer;

@@ -28,6 +28,7 @@ import AlertConfirm from "components/modal/AlertConfirm";
 import { deleteUserInTenant } from "services/user.service";
 import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
 import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -38,6 +39,7 @@ export const ListUserContainer = (props: Props) => {
   const [limit, setLimit] = useState(LIMIT_LIST[2]);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const handleChangeCurrentPage = (newPage: number) => {
     setCurrentPage(newPage);
@@ -74,6 +76,17 @@ export const ListUserContainer = (props: Props) => {
   return (
     <Box>
       <PaperWrapper label="Users">
+        <Button
+          colorScheme="purple"
+          position="absolute"
+          top="24px"
+          right="24px"
+          onClick={() => {
+            navigate("create");
+          }}
+        >
+          Create User
+        </Button>
         <Box>
           <PermissionPageWrapper permission={PERMISSION.VIEW_USER_LIST}>
             <TableContainer

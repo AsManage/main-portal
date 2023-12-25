@@ -3,6 +3,7 @@ import commonReducer from "./common/reducer";
 import authReducer from "./auth/reducer";
 import organisationReducer from "./organisation/reducer";
 import userReducer from "./user/reducer";
+import assetReducer from "./asset/reducer";
 import {} from "store";
 
 import {
@@ -17,6 +18,7 @@ export const store = configureStore({
     auth: authReducer,
     organisation: organisationReducer,
     user: userReducer,
+    asset: assetReducer,
   },
 });
 
@@ -25,6 +27,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   organisation: organisationReducer,
   user: userReducer,
+  asset: assetReducer,
 });
 
 export type AppDispatch = typeof store.dispatch;

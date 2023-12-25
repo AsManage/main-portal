@@ -20,6 +20,9 @@ import { PermissionPage } from "pages/permission/PermissionPage";
 import UserPage from "pages/user/UserPage";
 import ListUserPage from "pages/user/ListUserPage";
 import CreateUserPage from "pages/user/CreateUserPage";
+import AssetPage from "pages/asset/AssetPage";
+import ListAssetPage from "pages/asset/ListAssetPage";
+import CreateAssetPage from "pages/asset/CreateAssetPage";
 
 type Props = {};
 
@@ -63,6 +66,12 @@ function MainRoutes({}: Props) {
       <Route path="/user" element={<UserPage />}>
         <Route path="" element={<ListUserPage />} />
         <Route path="create" element={<CreateUserPage />} />
+      </Route>
+
+      {/** ASSET ROUTE */}
+      <Route path="/asset" element={<AssetPage />}>
+        <Route path="" element={<ListAssetPage />} />
+        <Route path="create" element={<CreateAssetPage />} />
       </Route>
 
       <Route path="/error/404" element={<NotFoundPage />} />

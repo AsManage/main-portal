@@ -3,6 +3,8 @@ export enum STORAGE_KEY {
   ACCOUNT_INFO = "account-info",
 }
 
+export const DEFAULT_FORMAT_DATE = "DD/MM/YYYY";
+
 export const LIMIT_LIST = [5, 10, 25, 50, 100];
 
 export const PERMISSION_LABEL_MAPPING = {
