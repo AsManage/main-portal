@@ -3,6 +3,49 @@ import { centralGW } from "./axios.service";
 export const getListAssetPaging = async (payload: {
   limit?: number;
   page?: number;
+  assetTypeId?: string;
+  acquisitionSourceId?: string;
 }) => {
   return await centralGW.get("/asset", { params: payload });
+};
+
+export const getListAcquisitionSource = async () => {
+  return await centralGW.get("/asset/acquisition");
+};
+
+export const getListAssetCategory = async () => {
+  return await centralGW.get("/asset/category");
+};
+
+export const getListAssetType = async (payload: {
+  categoryId: string | number;
+}) => {
+  return await centralGW.get("/asset/type", {
+    params: payload,
+    isDisableLoading: true,
+  });
+};
+
+export const createAsset = async (payload: {
+  name?: string;
+  quantity?: string;
+  image?: string;
+  originalCost?: string;
+  specification?: string;
+  isWarranty?: boolean;
+  warrantyDuration?: string;
+  timeUnit?: string;
+  warrantyStartDate?: string;
+  warrantyEndDate?: string;
+  warrantyCondition?: string;
+  note?: string;
+  conditionState?: string;
+  purchaseDate?: string;
+  depreciationAmount?: string;
+  serialNumber?: string;
+  acquisitionSourceId?: string;
+  assetTypeId?: string;
+  categoryId?: string;
+}) => {
+  return await centralGW.post("/asset", payload);
 };

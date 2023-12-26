@@ -1,6 +1,8 @@
+/* eslint-disable no-empty-pattern */
 import {
   Box,
   Button,
+  Flex,
   Img,
   Select,
   Table,
@@ -18,7 +20,12 @@ import ResponsivePagination from "react-responsive-pagination";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "store/store";
 import { getListAssetPaging } from "services/asset.service";
-import { assetSelector, getListAssetAction } from "store/asset";
+import {
+  assetSelector,
+  getListAcquisitionSourceAction,
+  getListAssetAction,
+  getListAssetTypeAction,
+} from "store/asset";
 import { formatPrice, showData } from "utils/common";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -28,10 +35,21 @@ type Props = {};
 export default function ListAssetContainer({}: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(LIMIT_LIST[2]);
-  const { listAssetPaging } = useSelector(assetSelector);
+  const { listAssetPaging, listAssetType, listAcquisitionSource } =
+    useSelector(assetSelector);
+  const [query, setQuery] = useState({
+    assetTypeId: "",
+    acquisitionSourceId: "",
+  });
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
+  const handleChangeData = (key: string, value: string | number | boolean) => {
+    setQuery((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
   const handleChangeCurrentPage = (newPage: number) => {
     setCurrentPage(newPage);
@@ -46,9 +64,15 @@ export default function ListAssetContainer({}: Props) {
       getListAssetAction({
         limit: limit,
         page: currentPage,
+        ...query,
       })
     );
-  }, [currentPage, dispatch, limit]);
+  }, [currentPage, dispatch, limit, query]);
+
+  useEffect(() => {
+    dispatch(getListAssetTypeAction({ categoryId: "" }));
+    dispatch(getListAcquisitionSourceAction());
+  }, [dispatch]);
 
   return (
     <PaperWrapper label="List Asset">
@@ -63,6 +87,46 @@ export default function ListAssetContainer({}: Props) {
       >
         Create Asset
       </Button>
+      <Flex gap="12px" mb="12px">
+        <Select
+          focusBorderColor="purple.400"
+          colorScheme="purple"
+          placeholder="Select Asset Type..."
+          variant="filled"
+          w="400px"
+          value={query.assetTypeId}
+          onChange={(e) => {
+            handleChangeData("assetTypeId", e.target.value);
+          }}
+        >
+          {listAssetType?.map((ele: any) => {
+            return (
+              <option key={ele?.id} value={ele?.id}>
+                {showData(ele?.name)}
+              </option>
+            );
+          })}
+        </Select>
+        <Select
+          focusBorderColor="purple.400"
+          colorScheme="purple"
+          placeholder="Select Acquisition Source..."
+          variant="filled"
+          w="400px"
+          value={query.acquisitionSourceId}
+          onChange={(e) => {
+            handleChangeData("acquisitionSourceId", e.target.value);
+          }}
+        >
+          {listAcquisitionSource?.map((ele: any) => {
+            return (
+              <option key={ele?.id} value={ele?.id}>
+                {showData(ele?.name)}
+              </option>
+            );
+          })}
+        </Select>
+      </Flex>
       <TableContainer
         border="1px solid var(--gray-02)"
         p="12px"

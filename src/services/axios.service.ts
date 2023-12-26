@@ -12,11 +12,12 @@ export const centralGW = axios.create({
 
 // Request interceptor
 centralGW.interceptors.request.use(
-  (config) => {
+  (config: any) => {
+    const { isDisableLoading } = config;
     const accessToken = storage.getStorageItem(
       storage.availableKey.ACCESS_TOKEN
     );
-    dispatch(setLoading(true));
+    !isDisableLoading && dispatch(setLoading(true));
 
     if (accessToken) {
       if (config.headers)
