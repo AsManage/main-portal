@@ -114,7 +114,13 @@ export const ListUserContainer = (props: Props) => {
                 <Tbody>
                   {listUserPaging?.result?.map((ele: any) => {
                     return (
-                      <Tr key={ele?.id}>
+                      <Tr
+                        key={ele?.id}
+                        cursor="pointer"
+                        onClick={() => {
+                          navigate(`${ele?.id}`);
+                        }}
+                      >
                         <Td>{ele?.id}</Td>
                         <Td>{showData(ele?.firstName)}</Td>
                         <Td>{showData(ele?.lastName)}</Td>

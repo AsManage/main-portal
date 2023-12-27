@@ -3,6 +3,7 @@ import {
   getListRoleAction,
   getListSystemPermissionAction,
   getListUserAction,
+  getUserDetailAction,
 } from "./actions";
 import { ResponseType } from "interfaces/reponse.interface";
 
@@ -10,12 +11,14 @@ interface State {
   listPermission: any;
   listRole: any;
   listUserPaging: any;
+  userDetail: any;
 }
 
 const initialState: State = {
   listPermission: [],
   listRole: [],
   listUserPaging: {},
+  userDetail: {},
 };
 
 const userSlice = createSlice({
@@ -39,9 +42,14 @@ const userSlice = createSlice({
     builder.addCase(
       getListUserAction.fulfilled,
       (state, action: PayloadAction<ResponseType>) => {
-        console.log(action.payload);
         if (action.payload?.isSuccess)
           state.listUserPaging = action.payload.result;
+      }
+    );
+    builder.addCase(
+      getUserDetailAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        if (action.payload?.isSuccess) state.userDetail = action.payload.result;
       }
     );
   },

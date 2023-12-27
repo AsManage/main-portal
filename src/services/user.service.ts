@@ -52,6 +52,10 @@ export const getListUserPaging = async (payload: {
   return await centralGW.get("/user/info", { params: payload });
 };
 
+export const getUserDetail = async (userId: number) => {
+  return await centralGW.get(`/user/info/${userId}`);
+};
+
 export const createUserInTenant = async (payload: {
   email: string;
   firstName: string;

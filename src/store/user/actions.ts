@@ -5,6 +5,7 @@ import {
   getListPermission,
   getListRole,
   getListUserPaging,
+  getUserDetail,
 } from "services/user.service";
 
 export const getListSystemPermissionAction = createAsyncThunk(
@@ -29,6 +30,14 @@ export const getListUserAction = createAsyncThunk(
   "auth/getListUserAction",
   async (payload: { limit: number; page: number }) => {
     const response = await getListUserPaging(payload);
+    return response.data;
+  }
+);
+
+export const getUserDetailAction = createAsyncThunk(
+  "auth/getUserDetailAction",
+  async (payload: { userId: number }) => {
+    const response = await getUserDetail(payload.userId);
     return response.data;
   }
 );

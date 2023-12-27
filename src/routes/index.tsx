@@ -23,6 +23,7 @@ import CreateUserPage from "pages/user/CreateUserPage";
 import AssetPage from "pages/asset/AssetPage";
 import ListAssetPage from "pages/asset/ListAssetPage";
 import CreateAssetPage from "pages/asset/CreateAssetPage";
+import UserDetailPage from "pages/user/UserDetailPage";
 
 type Props = {};
 
@@ -66,6 +67,7 @@ function MainRoutes({}: Props) {
       <Route path="/user" element={<UserPage />}>
         <Route path="" element={<ListUserPage />} />
         <Route path="create" element={<CreateUserPage />} />
+        <Route path=":userId" element={<UserDetailPage />} />
       </Route>
 
       {/** ASSET ROUTE */}
