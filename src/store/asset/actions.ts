@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  getDetailAsset,
   getListAcquisitionSource,
   getListAssetCategory,
   getListAssetPaging,
@@ -15,6 +16,14 @@ export const getListAssetAction = createAsyncThunk(
     acquisitionSourceId?: string;
   }) => {
     const response = await getListAssetPaging(payload);
+    return response.data;
+  }
+);
+
+export const getDetailAssetAction = createAsyncThunk(
+  "asset/getDetailAssetAction",
+  async (payload: { assetId: string }) => {
+    const response = await getDetailAsset(payload);
     return response.data;
   }
 );

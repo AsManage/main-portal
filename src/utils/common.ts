@@ -4,7 +4,8 @@ import { LocalStorage } from "./localStorage";
 const storage = new LocalStorage();
 
 export const showData = (data: any) => {
-  if (_.isNaN(data) || _.isNull(data) || _.isUndefined(data)) return "-";
+  if (_.isNaN(data) || _.isNull(data) || _.isUndefined(data) || !data)
+    return "-";
   else return data;
 };
 

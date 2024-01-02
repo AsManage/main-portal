@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "interfaces/reponse.interface";
 import {
+  getDetailAssetAction,
   getListAcquisitionSourceAction,
   getListAssetAction,
   getListAssetCategoryAction,
@@ -12,6 +13,7 @@ interface State {
   listAcquisitionSource: any;
   listAssetCategory: any;
   listAssetType: any;
+  detailAsset: any;
 }
 
 const initialState: State = {
@@ -19,6 +21,7 @@ const initialState: State = {
   listAcquisitionSource: [],
   listAssetCategory: [],
   listAssetType: [],
+  detailAsset: {},
 };
 
 const assetSlice = createSlice({
@@ -52,6 +55,13 @@ const assetSlice = createSlice({
       (state, action: PayloadAction<ResponseType>) => {
         if (action.payload?.isSuccess)
           state.listAssetType = action.payload.result;
+      }
+    );
+    builder.addCase(
+      getDetailAssetAction.fulfilled,
+      (state, action: PayloadAction<ResponseType>) => {
+        if (action.payload?.isSuccess)
+          state.detailAsset = action.payload.result;
       }
     );
   },

@@ -9,6 +9,10 @@ export const getListAssetPaging = async (payload: {
   return await centralGW.get("/asset", { params: payload });
 };
 
+export const getDetailAsset = async (payload: { assetId: string }) => {
+  return await centralGW.get(`/asset/${payload.assetId}`);
+};
+
 export const getListAcquisitionSource = async () => {
   return await centralGW.get("/asset/acquisition");
 };

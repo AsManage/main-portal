@@ -152,7 +152,20 @@ export default function ListAssetContainer({}: Props) {
           <Tbody>
             {listAssetPaging?.result?.map((ele: any) => {
               return (
-                <Tr key={ele?.id}>
+                <Tr
+                  key={ele?.id}
+                  cursor="pointer"
+                  _hover={{
+                    transition: "0.2s",
+                    position: "relative",
+                    zIndex: 100,
+                    boxShadow:
+                      "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                  }}
+                  onClick={() => {
+                    navigate(String(ele.id));
+                  }}
+                >
                   <Td>{ele?.id}</Td>
                   <Td>
                     <Img src="images/img-placeholder.jpg" />

@@ -16,7 +16,9 @@ export const IconLabelValue = ({
   return (
     <Flex alignItems="center" {...rest}>
       <Flex alignItems="center">
-        <Icon as={icon as unknown as As} fontSize="24px" color="purple.500" />
+        {icon && (
+          <Icon as={icon as unknown as As} fontSize="24px" color="purple.500" />
+        )}
         {/* <FaBuilding fontSize="18px" /> */}
         <Text ml="6px" fontSize="18px" color="var(--gray-01)" fontWeight="bold">
           {label}:

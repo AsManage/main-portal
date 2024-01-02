@@ -24,6 +24,7 @@ import AssetPage from "pages/asset/AssetPage";
 import ListAssetPage from "pages/asset/ListAssetPage";
 import CreateAssetPage from "pages/asset/CreateAssetPage";
 import UserDetailPage from "pages/user/UserDetailPage";
+import DetailAssetPage from "pages/asset/DetailAssetPage";
 
 type Props = {};
 
@@ -74,6 +75,7 @@ function MainRoutes({}: Props) {
       <Route path="/asset" element={<AssetPage />}>
         <Route path="" element={<ListAssetPage />} />
         <Route path="create" element={<CreateAssetPage />} />
+        <Route path=":assetId" element={<DetailAssetPage />} />
       </Route>
 
       <Route path="/error/404" element={<NotFoundPage />} />
