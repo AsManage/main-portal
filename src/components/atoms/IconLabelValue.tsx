@@ -4,7 +4,7 @@ import { IconType } from "react-icons";
 
 type Props = {
   label?: string;
-  value?: string;
+  value?: string | React.ReactNode;
   icon?: IconType;
 };
 export const IconLabelValue = ({

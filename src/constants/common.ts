@@ -5,6 +5,16 @@ export enum STORAGE_KEY {
 
 export const DEFAULT_FORMAT_DATE = "DD/MM/YYYY";
 
+export const ASSET_STATUS = {
+  AVAILABLE: "AVAILABLE",
+  NOT_AVAILABLE: "NOT AVAILABLE",
+};
+
+export const ASSET_STATUS_LABEL = {
+  AVAILABLE: "Available",
+  NOT_AVAILABLE: "Not Available",
+};
+
 export const LIMIT_LIST = [5, 10, 25, 50, 100];
 
 export const PERMISSION_LABEL_MAPPING = {

@@ -5,6 +5,11 @@ import {
   FormLabel,
   Image,
   Input,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
 } from "@chakra-ui/react";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
@@ -14,6 +19,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "store/store";
 import { getUserDetailAction, userSelector } from "store/user";
 import { showData } from "utils/common";
+import { AssetTab } from "./userDetailTabs/AssetTab";
 
 type Props = {};
 
@@ -100,6 +106,19 @@ export const UserDetailContainer = (props: Props) => {
             </Box>
           </Flex>
         </Flex>
+        <Box mt="12px">
+          <Tabs variant="enclosed" colorScheme="purple">
+            <TabList>
+              <Tab>Asset</Tab>
+            </TabList>
+
+            <TabPanels border="1px solid var(--chakra-colors-gray-200)">
+              <TabPanel>
+                <AssetTab />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Box>
       </PaperWrapper>
     </Box>
   );

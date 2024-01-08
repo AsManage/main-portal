@@ -15,7 +15,12 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
-import { DEFAULT_FORMAT_DATE, LIMIT_LIST } from "constants/common";
+import {
+  ASSET_STATUS,
+  ASSET_STATUS_LABEL,
+  DEFAULT_FORMAT_DATE,
+  LIMIT_LIST,
+} from "constants/common";
 import ResponsivePagination from "react-responsive-pagination";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "store/store";
@@ -29,6 +34,7 @@ import {
 import { formatPrice, showData } from "utils/common";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { AssetStatusTag } from "components/molecules/AssetStatusTag";
 
 type Props = {};
 
@@ -40,6 +46,7 @@ export default function ListAssetContainer({}: Props) {
   const [query, setQuery] = useState({
     assetTypeId: "",
     acquisitionSourceId: "",
+    status: "",
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -126,6 +133,27 @@ export default function ListAssetContainer({}: Props) {
             );
           })}
         </Select>
+        <Select
+          focusBorderColor="purple.400"
+          colorScheme="purple"
+          placeholder="Select Status..."
+          variant="filled"
+          w="400px"
+          value={query.status}
+          onChange={(e) => {
+            handleChangeData("status", e.target.value);
+          }}
+        >
+          {Object.keys(ASSET_STATUS)?.map((ele: any) => {
+            return (
+              <option key={ele} value={ele}>
+                {showData(
+                  ASSET_STATUS_LABEL[ele as keyof typeof ASSET_STATUS_LABEL]
+                )}
+              </option>
+            );
+          })}
+        </Select>
       </Flex>
       <TableContainer
         border="1px solid var(--gray-02)"
@@ -137,6 +165,9 @@ export default function ListAssetContainer({}: Props) {
             <Tr>
               <Th w="100px" fontSize="16px">
                 ID
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Status
               </Th>
               <Th fontSize="16px">Image</Th>
               <Th fontSize="16px">Asset Name</Th>
@@ -167,6 +198,9 @@ export default function ListAssetContainer({}: Props) {
                   }}
                 >
                   <Td>{ele?.id}</Td>
+                  <Td>
+                    <AssetStatusTag status={ASSET_STATUS.AVAILABLE} />
+                  </Td>
                   <Td>
                     <Img src="images/img-placeholder.jpg" />
                   </Td>
