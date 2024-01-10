@@ -198,8 +198,14 @@ export default function ListAssetContainer({}: Props) {
                   }}
                 >
                   <Td>{ele?.id}</Td>
-                  <Td>
-                    <AssetStatusTag status={ASSET_STATUS.AVAILABLE} />
+                  <Td textAlign="center">
+                    <AssetStatusTag
+                      status={
+                        ele?.isAvailable
+                          ? ASSET_STATUS.AVAILABLE
+                          : ASSET_STATUS.NOT_AVAILABLE
+                      }
+                    />
                   </Td>
                   <Td>
                     <Img src="images/img-placeholder.jpg" />

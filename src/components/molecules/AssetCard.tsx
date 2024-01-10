@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { CgMenuGridO } from "react-icons/cg";
 
-type Props = {};
+type Props = { title?: string };
 
-export function AssetCard({}: Props) {
+export function AssetCard({ title }: Props) {
   return (
     <Box
       w="224px"
@@ -34,7 +34,7 @@ export function AssetCard({}: Props) {
         textOverflow="ellipsis"
         whiteSpace="nowrap"
       >
-        Ipad 5 pro
+        {title}
       </Text>
       <Menu colorScheme="purple">
         <Box cursor="pointer" position="absolute" top="12px" right="12px">

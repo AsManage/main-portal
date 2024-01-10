@@ -1,10 +1,15 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
-import React from "react";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { Flex, Link, Text } from "@chakra-ui/react";
+import moment from "moment";
+import { showData } from "utils/common";
 
-type Props = {};
+type Props = {
+  date?: string;
+  from?: string;
+  to?: string;
+  note?: string;
+};
 
-export function TransferCard({}: Props) {
+export function TransferCard({ date, from, to, note }: Props) {
   return (
     <Flex alignItems="center" gap="12px">
       <Text>
@@ -13,14 +18,14 @@ export function TransferCard({}: Props) {
             fontWeight: "bold",
           }}
         >
-          [12/02/2000:12:03:16]
+          [{showData(moment(date).format("YYYY-MM-DD HH:mm:ss"))}]
         </span>
-        <Link color="var(--chakra-colors-purple-500)"> Nguyen Van A</Link>
-      </Text>
-      <FaArrowRightLong />
-      <Text>
-        <Link color="var(--chakra-colors-purple-500)"> Nguyen Van A</Link> (Cho
-        muon)
+        &nbsp;Assigned from
+        <Link color="var(--chakra-colors-purple-500)"> {showData(from)} </Link>
+        to
+        <Link color="var(--chakra-colors-purple-500)"> {showData(to)}</Link>
+        &nbsp;
+        {note ? `(${note})` : null}
       </Text>
     </Flex>
   );

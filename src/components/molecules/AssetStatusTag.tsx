@@ -10,7 +10,7 @@ export function AssetStatusTag({ status, ...res }: Props & TagProps) {
   return (
     <Tag
       textTransform="uppercase"
-      colorScheme={status === ASSET_STATUS.AVAILABLE ? "green" : "gray"}
+      colorScheme={status === ASSET_STATUS.AVAILABLE ? "green" : "red"}
       {...res}
     >
       {status}
