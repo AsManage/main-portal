@@ -4,6 +4,7 @@ import { login } from "services/auth.service";
 import {
   getListPermission,
   getListRole,
+  getListUserOption,
   getListUserPaging,
   getUserDetail,
 } from "services/user.service";
@@ -38,6 +39,14 @@ export const getUserDetailAction = createAsyncThunk(
   "auth/getUserDetailAction",
   async (payload: { userId: number }) => {
     const response = await getUserDetail(payload.userId);
+    return response.data;
+  }
+);
+
+export const getListUserOptionAction = createAsyncThunk(
+  "auth/getListUserOptionAction",
+  async () => {
+    const response = await getListUserOption();
     return response.data;
   }
 );

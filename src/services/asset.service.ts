@@ -53,3 +53,21 @@ export const createAsset = async (payload: {
 }) => {
   return await centralGW.post("/asset", payload);
 };
+
+export const assignAssetToUser = async (payload: {
+  assetId: string;
+  toUserId: string;
+  reason: string;
+}) => {
+  return await centralGW.post("/asset/assign", payload);
+};
+
+export const retrieveAsset = async (payload: {
+  assetId: string;
+  fromUserId: string;
+}) => {
+  return await centralGW.post("/asset/retrieve", {
+    assetId: payload.assetId,
+    fromUserId: payload.fromUserId,
+  });
+};

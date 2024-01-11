@@ -11,13 +11,14 @@ import {
   TabPanels,
   Tabs,
   Text,
+  Textarea,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { IconLabelValue } from "components/atoms/IconLabelValue";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
 import moment from "moment";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { assetSelector, getDetailAssetAction } from "store/asset";
 import { useDispatch, useSelector } from "store/store";
@@ -26,15 +27,67 @@ import { HistoryTab } from "./detailAssetTab/HistoryTab";
 import { AssetStatusTag } from "components/molecules/AssetStatusTag";
 import { ASSET_STATUS } from "constants/common";
 import ModalWrapper from "components/modal/ModalWrapper";
+import { getListUserOptionAction, userSelector } from "store/user";
+import { assignAssetToUser, retrieveAsset } from "services/asset.service";
+import AlertConfirm from "components/modal/AlertConfirm";
+import AlertEnsure from "components/modal/AlertEnsure";
 
 export default function DetailAssetContainer() {
   const { assetId } = useParams();
   const { detailAsset } = useSelector(assetSelector);
+  const { listUserOption } = useSelector(userSelector);
+  const [userId, setUserId] = useState({
+    userId: "",
+    note: "",
+  });
+  const [userIdError, setUserIdError] = useState("");
   const dispatch = useDispatch();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isOpenAlert,
+    onClose: onCloseAlert,
+    onOpen: onOpenAlert,
+  } = useDisclosure();
+
+  const handleAssignUser = async () => {
+    if (userId.userId) {
+      const res = await assignAssetToUser({
+        assetId: String(assetId),
+        reason: userId.note,
+        toUserId: userId.userId,
+      });
+      const { data } = res;
+      if (data?.isSuccess) {
+        onClose();
+        setUserId({ userId: "", note: "" });
+        dispatch(getDetailAssetAction({ assetId: assetId || "" }));
+      }
+      setUserIdError("");
+    } else {
+      setUserIdError("User is required!");
+    }
+  };
+
+  const handleRetrieveAsset = async () => {
+    if (detailAsset?.history && detailAsset?.history?.length > 0) {
+      const res = await retrieveAsset({
+        assetId: String(assetId),
+        fromUserId:
+          detailAsset?.history &&
+          detailAsset?.history?.length > 0 &&
+          detailAsset?.history[0].toCustodianId,
+      });
+      const { data } = res;
+      if (data?.isSuccess) {
+        onCloseAlert();
+        dispatch(getDetailAssetAction({ assetId: assetId || "" }));
+      }
+    }
+  };
 
   useEffect(() => {
     dispatch(getDetailAssetAction({ assetId: assetId || "" }));
+    dispatch(getListUserOptionAction());
   }, [assetId, dispatch]);
 
   return (
@@ -115,7 +168,7 @@ export default function DetailAssetContainer() {
                   </Link>
                 }
               />
-              <Button colorScheme="orange" onClick={onOpen}>
+              <Button colorScheme="orange" onClick={onOpenAlert}>
                 Retrieve
               </Button>
             </>
@@ -146,27 +199,64 @@ export default function DetailAssetContainer() {
           onClose();
         }}
         isOpen={isOpen}
+        onSubmit={handleAssignUser}
       >
-        <Box>
-          <Text className="required" fontWeight="bold" mb="8px">
-            User
-          </Text>
-          <Select
-            focusBorderColor="purple.400"
-            colorScheme="purple"
-            placeholder="Select user"
-            variant="filled"
-          >
-            {[1, 2]?.map((ele: any) => {
-              return (
-                <option key={ele.id} value={ele.id}>
-                  {ele.name}
-                </option>
-              );
-            })}
-          </Select>
-        </Box>
+        <Flex direction="column" gap="12px">
+          <Box>
+            <Text className="required" fontWeight="bold" mb="8px">
+              User
+            </Text>
+            <Select
+              focusBorderColor="purple.400"
+              colorScheme="purple"
+              placeholder="Select user"
+              variant="filled"
+              isInvalid={userIdError.length > 0}
+              value={userId.userId}
+              onChange={(e) => {
+                setUserId({
+                  ...userId,
+                  userId: e.target.value,
+                });
+              }}
+            >
+              {listUserOption?.map((ele: any) => {
+                return (
+                  <option key={ele.id} value={ele.id}>
+                    {`${ele?.firstName} ${ele?.lastName}-${ele?.phoneNumber}`}
+                  </option>
+                );
+              })}
+            </Select>
+            {userIdError && (
+              <Text className="error-message">{userIdError}</Text>
+            )}
+          </Box>
+          <Box>
+            <Text fontWeight="bold" mb="8px">
+              Reason
+            </Text>
+            <Textarea
+              focusBorderColor="purple.400"
+              colorScheme="purple"
+              placeholder="Reason..."
+              variant="filled"
+              value={userId.note}
+              onChange={(e) => {
+                setUserId({
+                  ...userId,
+                  note: e.target.value,
+                });
+              }}
+            />
+          </Box>
+        </Flex>
       </ModalWrapper>
+      <AlertEnsure
+        isOpen={isOpenAlert}
+        onClose={onCloseAlert}
+        onSubmit={handleRetrieveAsset}
+      />
     </PaperWrapper>
   );
 }

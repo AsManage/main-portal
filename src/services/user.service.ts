@@ -56,6 +56,10 @@ export const getUserDetail = async (userId: number) => {
   return await centralGW.get(`/user/info/${userId}`);
 };
 
+export const getListUserOption = async () => {
+  return await centralGW.get(`/user/option`);
+};
+
 export const createUserInTenant = async (payload: {
   email: string;
   firstName: string;
