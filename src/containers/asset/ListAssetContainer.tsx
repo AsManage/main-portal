@@ -75,7 +75,10 @@ export default function ListAssetContainer({}: Props) {
     link.href = url;
     link.setAttribute(
       "download",
-      `Report-Asset-${moment().format("DD/MM/YYYY HH:mm:ss")}.xlsx`
+      `Report-Asset-${moment()
+        .format("DD/MM/YYYY HH:mm_ss")
+        .replace(":", "h")
+        .replace("_", "m")}.xlsx`
     );
     document.body.appendChild(link);
     link.click();
