@@ -19,7 +19,7 @@ import { IconLabelValue } from "components/atoms/IconLabelValue";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { assetSelector, getDetailAssetAction } from "store/asset";
 import { useDispatch, useSelector } from "store/store";
 import { formatPrice, showData } from "utils/common";
@@ -48,6 +48,7 @@ export default function DetailAssetContainer() {
     onClose: onCloseAlert,
     onOpen: onOpenAlert,
   } = useDisclosure();
+  const navigate = useNavigate();
 
   const handleAssignUser = async () => {
     if (userId.userId) {
@@ -127,10 +128,14 @@ export default function DetailAssetContainer() {
             label="Acquisition Source"
             value={showData(detailAsset?.acquisitionSource)}
           />
-          {/* <IconLabelValue
-            label="Quantity"
-            value={showData(detailAsset?.quantity)}
-          /> */}
+          <IconLabelValue
+            label="Useful Life"
+            value={`${showData(detailAsset?.usefulLife)} years`}
+          />
+          <IconLabelValue
+            label="Depreciation Rate"
+            value={`${showData(detailAsset?.depreciationAmount)}%`}
+          />
           <IconLabelValue
             label="Original Cost"
             value={showData(formatPrice(detailAsset?.originalCost))}
@@ -181,7 +186,12 @@ export default function DetailAssetContainer() {
               <IconLabelValue
                 label="Assigned To"
                 value={
-                  <Link color="var(--chakra-colors-purple-500)">
+                  <Link
+                    color="var(--chakra-colors-purple-500)"
+                    onClick={() => {
+                      navigate(`/user/${detailAsset?.history[0]?.toUser?.id}`);
+                    }}
+                  >
                     {detailAsset?.history &&
                       detailAsset?.history?.length > 0 &&
                       `${detailAsset?.history[0]?.toUser?.lastName}

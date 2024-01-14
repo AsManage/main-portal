@@ -37,7 +37,14 @@ export const UserDetailContainer = (props: Props) => {
       <PaperWrapper label="Users">
         <Flex gap="24px">
           <Box>
-            <Image width="300px" src="/images/avatar-placeholder.jpg" />
+            <Image
+              width="300px"
+              src={
+                userDetail?.image
+                  ? userDetail?.image
+                  : "/images/avatar-placeholder.jpg"
+              }
+            />
           </Box>
           <Flex direction="column" gap="12px" flexWrap="wrap" w="100%">
             <Flex w="100%">

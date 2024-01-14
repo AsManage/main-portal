@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { CgMenuGridO } from "react-icons/cg";
 
-type Props = { title?: string };
+type Props = { title?: string; image?: string; onClick?: () => void };
 
-export function AssetCard({ title }: Props) {
+export function AssetCard({ title, image, onClick }: Props) {
   return (
     <Box
       w="224px"
@@ -25,6 +25,7 @@ export function AssetCard({ title }: Props) {
           "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;",
       }}
       cursor="pointer"
+      onClick={onClick}
     >
       <Text
         fontSize="16px"
@@ -45,7 +46,11 @@ export function AssetCard({ title }: Props) {
           </MenuList>
         </Box>
       </Menu>
-      <Img src="/images/img-placeholder.jpg" w="200px" />
+      <Img
+        src={image ? image : "/images/img-placeholder.jpg"}
+        w="200px"
+        maxH="200px"
+      />
     </Box>
   );
 }
