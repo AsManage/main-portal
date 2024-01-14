@@ -24,7 +24,7 @@ import {
 import ResponsivePagination from "react-responsive-pagination";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "store/store";
-import { getListAssetPaging } from "services/asset.service";
+import { exportExcel, getListAssetPaging } from "services/asset.service";
 import {
   assetSelector,
   getListAcquisitionSourceAction,
@@ -35,6 +35,7 @@ import { formatPrice, showData } from "utils/common";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { AssetStatusTag } from "components/molecules/AssetStatusTag";
+import { RiFileExcel2Fill } from "react-icons/ri";
 
 type Props = {};
 
@@ -64,6 +65,17 @@ export default function ListAssetContainer({}: Props) {
 
   const handleChangeLimit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLimit(Number(e.target.value));
+  };
+
+  const exportData = async () => {
+    const response = await exportExcel();
+    console.log(response);
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${Date.now()}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
   };
 
   useEffect(() => {
@@ -133,6 +145,13 @@ export default function ListAssetContainer({}: Props) {
             );
           })}
         </Select>
+        <Button
+          leftIcon={<RiFileExcel2Fill />}
+          colorScheme="purple"
+          onClick={exportData}
+        >
+          Export
+        </Button>
         {/* <Select
           focusBorderColor="purple.400"
           colorScheme="purple"

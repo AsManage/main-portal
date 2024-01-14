@@ -72,3 +72,9 @@ export const retrieveAsset = async (payload: {
     fromUserId: payload.fromUserId,
   });
 };
+
+export const exportExcel = async () => {
+  return await centralGW.get("/asset/export", {
+    responseType: "blob",
+  });
+};
