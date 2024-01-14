@@ -127,13 +127,17 @@ export default function DetailAssetContainer() {
             label="Acquisition Source"
             value={showData(detailAsset?.acquisitionSource)}
           />
-          <IconLabelValue
+          {/* <IconLabelValue
             label="Quantity"
             value={showData(detailAsset?.quantity)}
-          />
+          /> */}
           <IconLabelValue
             label="Original Cost"
             value={showData(formatPrice(detailAsset?.originalCost))}
+          />
+          <IconLabelValue
+            label="Remaining Cost"
+            value={showData(formatPrice(detailAsset?.currentCost))}
           />
           <IconLabelValue
             label="Condition State"
@@ -143,6 +147,12 @@ export default function DetailAssetContainer() {
           <IconLabelValue
             label="Specification"
             value={showData(detailAsset?.specification)}
+          />
+          <IconLabelValue
+            label="Purchase Date"
+            value={showData(
+              moment(detailAsset?.purchase_date).format("DD/MM/YYYY")
+            )}
           />
           <IconLabelValue
             label="Warranty Duration"
