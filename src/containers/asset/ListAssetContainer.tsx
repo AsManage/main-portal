@@ -208,7 +208,11 @@ export default function ListAssetContainer({}: Props) {
                     />
                   </Td>
                   <Td>
-                    <Img src="images/img-placeholder.jpg" />
+                    <Img
+                      src={
+                        ele?.image ? ele?.image : "/images/img-placeholder.jpg"
+                      }
+                    />
                   </Td>
                   <Td textAlign="center">{showData(ele?.name)}</Td>
                   <Td textAlign="center">{showData(ele?.type)}</Td>

@@ -1,4 +1,4 @@
-import { Box, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Img, Text, VStack } from "@chakra-ui/react";
 import { IconLabelValue } from "components/atoms/IconLabelValue";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
 import { SiOpenstreetmap } from "react-icons/si";
@@ -37,11 +37,12 @@ export function TenantInfoContainer({}: Props) {
             justifyContent="center"
             alignItems="center"
           >
-            <Image
-              w="100%"
-              h="auto"
-              src="/images/img-placeholder.jpg"
-              overflow="hidden"
+            <Img
+              src={
+                tenantInfo?.logo
+                  ? tenantInfo?.logo
+                  : "/images/img-placeholder.jpg"
+              }
             />
           </Box>
           <VStack spacing="12px" alignItems="flex-start">

@@ -39,7 +39,11 @@ export function SettingAccountContainer({}: Props) {
             <Image
               w="100%"
               h="auto"
-              src="/images/avatar-placeholder.jpg"
+              src={
+                userInfo?.image
+                  ? userInfo?.image
+                  : "/images/avatar-placeholder.jpg"
+              }
               overflow="hidden"
             />
           </Box>

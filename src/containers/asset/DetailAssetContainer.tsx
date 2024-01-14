@@ -103,8 +103,19 @@ export default function DetailAssetContainer() {
         right="24px"
       />
       <Flex alignItems="flex-start">
-        <Box w="300px">
-          <Img src="/images/img-placeholder.jpg" />
+        <Box
+          w="300px"
+          maxHeight="300px"
+          overflow="hidden"
+          border="1px solid var(--gray-01)"
+        >
+          <Img
+            src={
+              detailAsset?.image
+                ? detailAsset?.image
+                : "/images/img-placeholder.jpg"
+            }
+          />
         </Box>
         <VStack spacing="6px" alignItems="flex-start">
           <IconLabelValue
