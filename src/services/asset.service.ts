@@ -46,6 +46,7 @@ export const createAsset = async (payload: {
   conditionState?: string;
   purchaseDate?: string;
   depreciationAmount?: string;
+  usefulLife?: string;
   serialNumber?: string;
   acquisitionSourceId?: string;
   assetTypeId?: string;

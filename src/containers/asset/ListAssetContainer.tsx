@@ -133,7 +133,7 @@ export default function ListAssetContainer({}: Props) {
             );
           })}
         </Select>
-        <Select
+        {/* <Select
           focusBorderColor="purple.400"
           colorScheme="purple"
           placeholder="Select Status..."
@@ -153,7 +153,7 @@ export default function ListAssetContainer({}: Props) {
               </option>
             );
           })}
-        </Select>
+        </Select> */}
       </Flex>
       <TableContainer
         border="1px solid var(--gray-02)"

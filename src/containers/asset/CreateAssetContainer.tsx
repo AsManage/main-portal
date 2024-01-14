@@ -9,7 +9,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createAsset } from "services/asset.service";
 import {
@@ -30,7 +30,7 @@ export default function CreateAssetContainer({}: Props) {
     useSelector(assetSelector);
   const [formData, setFormData] = useState({
     name: "",
-    quantity: "",
+    quantity: "1",
     image: "",
     originalCost: "",
     specification: "",
@@ -44,6 +44,7 @@ export default function CreateAssetContainer({}: Props) {
     conditionState: "",
     purchaseDate: "",
     depreciationAmount: "",
+    usefulLife: "",
     serialNumber: "",
     acquisitionSourceId: "",
     assetTypeId: "",
@@ -64,6 +65,7 @@ export default function CreateAssetContainer({}: Props) {
     conditionState: "",
     purchaseDate: "",
     depreciationAmount: "",
+    usefulLife: "",
     serialNumber: "",
     acquisitionSourceId: "",
     assetTypeId: "",
@@ -77,6 +79,12 @@ export default function CreateAssetContainer({}: Props) {
     }));
   };
 
+  const currentCategory = useMemo(() => {
+    return listAssetCategory?.find(
+      (ele: any) => ele?.id == formData.categoryId
+    );
+  }, [formData.categoryId, listAssetCategory]);
+
   const handleSubmit = async () => {
     const error = { ...formDataError };
     let valid = true;
@@ -86,12 +94,12 @@ export default function CreateAssetContainer({}: Props) {
     } else {
       error.name = "";
     }
-    if (!Number(formData.quantity)) {
-      error.quantity = "Quantity greater than 0";
-      valid = false;
-    } else {
-      error.quantity = "";
-    }
+    // if (!Number(formData.quantity)) {
+    //   error.quantity = "Quantity greater than 0";
+    //   valid = false;
+    // } else {
+    //   error.quantity = "";
+    // }
     if (!Number(formData.originalCost)) {
       error.originalCost = "Original Cost greater than 0";
       valid = false;
@@ -104,11 +112,28 @@ export default function CreateAssetContainer({}: Props) {
     } else {
       error.serialNumber = "";
     }
-    if (!Number(formData.depreciationAmount)) {
-      error.depreciationAmount = "Depreciation Amount greater than 0";
+    if (
+      !Number(formData.depreciationAmount) ||
+      Number(formData.depreciationAmount) <
+        Number(currentCategory?.depreciationBasisMinValue) ||
+      Number(formData.depreciationAmount) >
+        Number(currentCategory?.depreciationBasisMaxValue)
+    ) {
+      error.depreciationAmount = "Depreciation Amount invalid";
       valid = false;
     } else {
       error.depreciationAmount = "";
+    }
+    if (
+      !Number(formData.usefulLife) ||
+      Number(formData.usefulLife) <
+        Number(currentCategory?.usefulLifeMinYear) ||
+      Number(formData.usefulLife) > Number(currentCategory?.usefulLifeMaxYear)
+    ) {
+      error.usefulLife = "Useful Life invalid";
+      valid = false;
+    } else {
+      error.usefulLife = "";
     }
     if (!formData.acquisitionSourceId) {
       error.acquisitionSourceId = "Acquisition Source is required";
@@ -169,7 +194,7 @@ export default function CreateAssetContainer({}: Props) {
         navigate("/asset");
         setFormData({
           name: "",
-          quantity: "",
+          quantity: "1",
           image: "",
           originalCost: "",
           specification: "",
@@ -183,6 +208,7 @@ export default function CreateAssetContainer({}: Props) {
           conditionState: "",
           purchaseDate: "",
           depreciationAmount: "",
+          usefulLife: "",
           serialNumber: "",
           acquisitionSourceId: "",
           assetTypeId: "",
@@ -218,7 +244,7 @@ export default function CreateAssetContainer({}: Props) {
       </Button>
       <Box display="flex" gap="12px" flexDirection="column">
         <Flex gap="12px">
-          <Box w="50%">
+          <Box w="100%">
             <Text className="required" mb="8px">
               Asset Name
             </Text>
@@ -236,7 +262,7 @@ export default function CreateAssetContainer({}: Props) {
               <Text className="error-message">{formDataError.name}</Text>
             )}
           </Box>
-          <Box w="50%">
+          {/* <Box w="50%">
             <Text className="required" mb="8px">
               Quantity
             </Text>
@@ -254,7 +280,7 @@ export default function CreateAssetContainer({}: Props) {
             {formDataError.quantity && (
               <Text className="error-message">{formDataError.quantity}</Text>
             )}
-          </Box>
+          </Box> */}
         </Flex>
         <Flex gap="12px">
           <Box w="50%">
@@ -295,57 +321,6 @@ export default function CreateAssetContainer({}: Props) {
             {formDataError.serialNumber && (
               <Text className="error-message">
                 {formDataError.serialNumber}
-              </Text>
-            )}
-          </Box>
-        </Flex>
-        <Flex gap="12px">
-          <Box w="50%">
-            <Text className="required" mb="8px">
-              Depreciation Amount
-            </Text>
-            <Input
-              type="number"
-              placeholder="15..."
-              focusBorderColor="purple.400"
-              colorScheme="purple"
-              variant="filled"
-              value={formData.depreciationAmount}
-              onChange={(e) => {
-                handleChangeData("depreciationAmount", e.target.value);
-              }}
-            />{" "}
-            {formDataError.depreciationAmount && (
-              <Text className="error-message">
-                {formDataError.depreciationAmount}
-              </Text>
-            )}
-          </Box>
-          <Box w="50%">
-            <Text className="required" mb="8px">
-              Acquisition Source
-            </Text>
-            <Select
-              focusBorderColor="purple.400"
-              colorScheme="purple"
-              placeholder="Select option"
-              variant="filled"
-              value={formData.acquisitionSourceId}
-              onChange={(e) => {
-                handleChangeData("acquisitionSourceId", e.target.value);
-              }}
-            >
-              {listAcquisitionSource?.map((ele: any) => {
-                return (
-                  <option key={ele?.id} value={ele?.id}>
-                    {showData(ele?.name)}
-                  </option>
-                );
-              })}
-            </Select>
-            {formDataError.acquisitionSourceId && (
-              <Text className="error-message">
-                {formDataError.acquisitionSourceId}
               </Text>
             )}
           </Box>
@@ -401,6 +376,101 @@ export default function CreateAssetContainer({}: Props) {
             </Select>
             {formDataError.assetTypeId && (
               <Text className="error-message">{formDataError.assetTypeId}</Text>
+            )}
+          </Box>
+        </Flex>
+        <Flex gap="12px">
+          <Box w="25%">
+            <Text className="required" mb="8px">
+              Depreciation Rate
+            </Text>
+
+            <Input
+              type="number"
+              placeholder={
+                currentCategory
+                  ? currentCategory?.depreciationBasisMinValue !=
+                    currentCategory?.depreciationBasisMaxValue
+                    ? `${showData(
+                        currentCategory?.depreciationBasisMinValue
+                      )} - ${showData(
+                        currentCategory?.depreciationBasisMaxValue
+                      )}%`
+                    : `${showData(
+                        currentCategory?.depreciationBasisMaxValue
+                      )} years`
+                  : "Please select category"
+              }
+              focusBorderColor="purple.400"
+              colorScheme="purple"
+              variant="filled"
+              value={formData.depreciationAmount}
+              onChange={(e) => {
+                handleChangeData("depreciationAmount", e.target.value);
+              }}
+            />
+            {formDataError.depreciationAmount && (
+              <Text className="error-message">
+                {formDataError.depreciationAmount}
+              </Text>
+            )}
+          </Box>
+          <Box w="25%">
+            <Text className="required" mb="8px">
+              Useful Years
+            </Text>
+            <Input
+              type="number"
+              placeholder={
+                currentCategory
+                  ? currentCategory?.usefulLifeMinYear !=
+                    currentCategory?.usefulLifeMaxYear
+                    ? `${showData(
+                        currentCategory?.usefulLifeMinYear
+                      )} - ${showData(
+                        currentCategory?.usefulLifeMaxYear
+                      )} years`
+                    : `${showData(currentCategory?.usefulLifeMaxYear)} years`
+                  : "Please select category"
+              }
+              focusBorderColor="purple.400"
+              colorScheme="purple"
+              variant="filled"
+              value={formData.usefulLife}
+              onChange={(e) => {
+                handleChangeData("usefulLife", e.target.value);
+              }}
+            />
+            {formDataError.usefulLife && (
+              <Text className="error-message">{formDataError.usefulLife}</Text>
+            )}
+          </Box>
+          <Box w="50%">
+            <Text className="required" mb="8px">
+              Acquisition Source
+            </Text>
+            <Select
+              focusBorderColor="purple.400"
+              colorScheme="purple"
+              placeholder="Select option"
+              variant="filled"
+              value={formData.acquisitionSourceId}
+              onChange={(e) => {
+                handleChangeData("acquisitionSourceId", e.target.value);
+              }}
+            >
+              {listAcquisitionSource?.map((ele: any) => {
+                return (
+                  <option key={ele?.id} value={ele?.id}>
+                    {showData(ele?.name)}
+                  </option>
+                );
+              })}
+            </Select>
+            {formDataError.acquisitionSourceId && (
+              <Text className="error-message">
+                {formDataError.acquisitionSourceId}
+              </Text>
             )}
           </Box>
         </Flex>
