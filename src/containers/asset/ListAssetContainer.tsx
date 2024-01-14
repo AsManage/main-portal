@@ -69,7 +69,6 @@ export default function ListAssetContainer({}: Props) {
 
   const exportData = async () => {
     const response = await exportExcel();
-    console.log(response);
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
@@ -158,27 +157,6 @@ export default function ListAssetContainer({}: Props) {
         >
           Export
         </Button>
-        {/* <Select
-          focusBorderColor="purple.400"
-          colorScheme="purple"
-          placeholder="Select Status..."
-          variant="filled"
-          w="400px"
-          value={query.status}
-          onChange={(e) => {
-            handleChangeData("status", e.target.value);
-          }}
-        >
-          {Object.keys(ASSET_STATUS)?.map((ele: any) => {
-            return (
-              <option key={ele} value={ele}>
-                {showData(
-                  ASSET_STATUS_LABEL[ele as keyof typeof ASSET_STATUS_LABEL]
-                )}
-              </option>
-            );
-          })}
-        </Select> */}
       </Flex>
       <TableContainer
         border="1px solid var(--gray-02)"
@@ -194,15 +172,30 @@ export default function ListAssetContainer({}: Props) {
               <Th fontSize="16px" textAlign="center">
                 Status
               </Th>
-              <Th fontSize="16px">Image</Th>
-              <Th fontSize="16px">Asset Name</Th>
-              <Th fontSize="16px">Type</Th>
-              <Th fontSize="16px">Quantity</Th>
-              <Th fontSize="16px">Original Cost</Th>
-              <Th fontSize="16px">Warranty Duration</Th>
-              <Th fontSize="16px">Warranty Start Date</Th>
-              <Th fontSize="16px">Warranty End Date</Th>
-              <Th fontSize="16px">Purchase Date</Th>
+              <Th fontSize="16px" textAlign="center">
+                Image
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Asset Name
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Type
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Original Cost
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Warranty Duration
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Warranty Start Date
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Warranty End Date
+              </Th>
+              <Th fontSize="16px" textAlign="center">
+                Purchase Date
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -241,9 +234,8 @@ export default function ListAssetContainer({}: Props) {
                   </Td>
                   <Td textAlign="center">{showData(ele?.name)}</Td>
                   <Td textAlign="center">{showData(ele?.type)}</Td>
-                  <Td textAlign="center">{showData(ele?.quantity)}</Td>
                   <Td textAlign="center">
-                    {showData(formatPrice(ele?.quantity))}
+                    {showData(formatPrice(ele?.originalCost))}
                   </Td>
                   <Td textAlign="center">
                     {showData(ele?.warrantyDuration)} {showData(ele?.timeUnit)}

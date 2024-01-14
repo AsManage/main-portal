@@ -14,7 +14,7 @@ export const IconLabelValue = ({
   ...rest
 }: Props & FlexProps) => {
   return (
-    <Flex alignItems="center" {...rest}>
+    <Flex alignItems="flex-start" {...rest}>
       <Flex alignItems="center">
         {icon && (
           <Icon as={icon as unknown as As} fontSize="24px" color="purple.500" />

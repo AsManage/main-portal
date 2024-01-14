@@ -1,8 +1,10 @@
+import { Box, Button } from "@chakra-ui/react";
 import SimpleSidebar from "components/molecules/Sidebar";
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { validateLogin } from "services/auth.service";
 import { LocalStorage } from "utils/localStorage";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 type Props = {
   children: React.ReactNode;
@@ -22,5 +24,9 @@ export function MainLayout({ children }: Props) {
     if (!accessToken) window.location.href = "/auth";
   }, [location]);
 
-  return <SimpleSidebar>{children}</SimpleSidebar>;
+  return (
+    <SimpleSidebar>
+      <Box>{children}</Box>
+    </SimpleSidebar>
+  );
 }

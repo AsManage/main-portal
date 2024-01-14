@@ -13,6 +13,7 @@ import {
   FlexProps,
   Image,
   Collapse,
+  Button,
 } from "@chakra-ui/react";
 import {
   FaBoxOpen,
@@ -35,6 +36,7 @@ import { havePermission } from "utils/common";
 import { PERMISSION } from "constants/common";
 import { TbPointFilled } from "react-icons/tb";
 import { commonSelector, setClosedList } from "store/common";
+import { TbArrowBackUp } from "react-icons/tb";
 
 interface LinkItemProps {
   name: string;
@@ -164,6 +166,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ],
     },
   ];
+  const navigate = useNavigate();
   const { closedList } = useSelector(commonSelector);
 
   const handleAddCloseList = (id: string) => () => {
@@ -198,6 +201,19 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <IoLogOut fontSize="20px" cursor="pointer" onClick={handleLogout} />
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
+      <Button
+        leftIcon={<TbArrowBackUp />}
+        colorScheme="purple"
+        margin="auto"
+        display="block"
+        mb="12px"
+        variant="outline"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        Go back
+      </Button>
       <Box overflow="auto" h="calc(100% - 60px)">
         {LinkItems.map(
           (link) =>

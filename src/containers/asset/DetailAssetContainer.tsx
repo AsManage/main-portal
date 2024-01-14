@@ -103,9 +103,11 @@ export default function DetailAssetContainer() {
         top="30px"
         right="24px"
       />
-      <Flex alignItems="flex-start">
+      <Flex alignItems="flex-start" gap="24px">
         <Box
-          w="300px"
+          w="100%"
+          minW="300px"
+          maxW="600px"
           maxHeight="300px"
           overflow="hidden"
           border="1px solid var(--gray-01)"
