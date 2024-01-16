@@ -172,12 +172,12 @@ export const LoginContainers = () => {
           </Box>
         </form>
       </Stack>
-      <Box>
+      {/* <Box>
         New to us?{" "}
         <Link color="purple.500" href="#">
           Sign Up
         </Link>
-      </Box>
+      </Box> */}
     </Flex>
   );
 };
