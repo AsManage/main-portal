@@ -138,12 +138,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       name: "Asset",
       icon: FaBoxOpen,
       path: "/asset",
-      isAllow: havePermission(PERMISSION.USER),
+      isAllow: havePermission(PERMISSION.ASSET),
       children: [
         {
           name: "List Asset",
           path: "/asset",
-          isAllow: true,
+          isAllow: havePermission(PERMISSION.ACCESS_ASSET_LIST),
         },
       ],
     },

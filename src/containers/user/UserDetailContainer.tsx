@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from "store/store";
 import { getUserDetailAction, userSelector } from "store/user";
 import { showData } from "utils/common";
 import { AssetTab } from "./userDetailTabs/AssetTab";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
+import { PERMISSION } from "constants/common";
 
 type Props = {};
 
@@ -34,11 +36,19 @@ export const UserDetailContainer = (props: Props) => {
 
   return (
     <Box>
-      <PaperWrapper label="Users">
+      <PaperWrapper label="Users" w="100%">
         <Flex gap="24px">
-          <Box>
+          <Box
+            boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
+            borderRadius="12px"
+            overflow="hidden"
+            width="200px"
+            height="200px"
+          >
             <Image
-              width="300px"
+              width="100%"
+              h="100%"
+              objectFit="cover"
               src={
                 userDetail?.image
                   ? userDetail?.image
@@ -46,7 +56,7 @@ export const UserDetailContainer = (props: Props) => {
               }
             />
           </Box>
-          <Flex direction="column" gap="12px" flexWrap="wrap" w="100%">
+          <Flex direction="column" gap="12px" flexWrap="wrap">
             <Flex w="100%">
               <Flex gap="6px" w="50%">
                 <Text fontWeight="bold">First Name:</Text>
@@ -116,12 +126,16 @@ export const UserDetailContainer = (props: Props) => {
         <Box mt="12px">
           <Tabs variant="enclosed" colorScheme="purple">
             <TabList>
-              <Tab>Asset</Tab>
+              <Tab>Assigned Assets</Tab>
             </TabList>
 
             <TabPanels border="1px solid var(--chakra-colors-gray-200)">
               <TabPanel>
-                <AssetTab />
+                <PermissionPageWrapper
+                  permission={PERMISSION.VIEW_ASSIGNED_ASSET_OF_USER}
+                >
+                  <AssetTab />
+                </PermissionPageWrapper>
               </TabPanel>
             </TabPanels>
           </Tabs>

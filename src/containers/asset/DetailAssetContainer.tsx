@@ -25,12 +25,14 @@ import { useDispatch, useSelector } from "store/store";
 import { formatPrice, showData } from "utils/common";
 import { HistoryTab } from "./detailAssetTab/HistoryTab";
 import { AssetStatusTag } from "components/molecules/AssetStatusTag";
-import { ASSET_STATUS } from "constants/common";
+import { ASSET_STATUS, PERMISSION } from "constants/common";
 import ModalWrapper from "components/modal/ModalWrapper";
 import { getListUserOptionAction, userSelector } from "store/user";
 import { assignAssetToUser, retrieveAsset } from "services/asset.service";
 import AlertConfirm from "components/modal/AlertConfirm";
 import AlertEnsure from "components/modal/AlertEnsure";
+import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
 
 export default function DetailAssetContainer() {
   const { assetId } = useParams();
@@ -108,11 +110,15 @@ export default function DetailAssetContainer() {
           w="100%"
           minW="300px"
           maxW="600px"
-          maxHeight="300px"
+          maxHeight="600px"
           overflow="hidden"
-          border="1px solid var(--gray-01)"
+          borderRadius="12px"
+          boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
         >
           <Img
+            width="100%"
+            h="100%"
+            objectFit="cover"
             src={
               detailAsset?.image
                 ? detailAsset?.image
@@ -201,15 +207,19 @@ export default function DetailAssetContainer() {
                   </Link>
                 }
               />
-              <Button colorScheme="orange" onClick={onOpenAlert}>
-                Retrieve
-              </Button>
+              <PermissionWrapper permission={PERMISSION.RETRIEVE_ASSET_USER}>
+                <Button colorScheme="orange" onClick={onOpenAlert}>
+                  Retrieve
+                </Button>
+              </PermissionWrapper>
             </>
           )}
           {detailAsset?.isAvailable && (
-            <Button colorScheme="purple" onClick={onOpen}>
-              Assign to
-            </Button>
+            <PermissionWrapper permission={PERMISSION.ASSIGN_ASSET_USER}>
+              <Button colorScheme="purple" onClick={onOpen}>
+                Assign to
+              </Button>
+            </PermissionWrapper>
           )}
         </VStack>
       </Flex>
@@ -221,7 +231,11 @@ export default function DetailAssetContainer() {
 
           <TabPanels border="1px solid var(--chakra-colors-gray-200)">
             <TabPanel>
-              <HistoryTab />
+              <PermissionPageWrapper
+                permission={PERMISSION.VIEW_ASSET_ASSIGN_HISTORY}
+              >
+                <HistoryTab />
+              </PermissionPageWrapper>
             </TabPanel>
           </TabPanels>
         </Tabs>

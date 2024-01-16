@@ -2,12 +2,14 @@ import { Flex } from "@chakra-ui/react";
 import { TransferCard } from "components/molecules/TransferCard";
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { assetSelector } from "store/asset";
 
 type Props = {};
 
 export function HistoryTab({}: Props) {
   const { detailAsset } = useSelector(assetSelector);
+  const navigate = useNavigate();
 
   return (
     <Flex flexDirection="column" gap="12px">
@@ -28,6 +30,16 @@ export function HistoryTab({}: Props) {
                   : `${ele?.toUser?.lastName} ${ele?.toUser?.firstName}`
               }
               note={ele?.reason}
+              onClickFrom={
+                ele?.fromCustodianId !== -1
+                  ? () => navigate(`/user/${ele?.fromUser?.id}`)
+                  : () => {}
+              }
+              onClickTo={
+                ele?.toCustodianId !== -1
+                  ? () => navigate(`/user/${ele?.toUser?.id}`)
+                  : () => {}
+              }
             />
           );
         })

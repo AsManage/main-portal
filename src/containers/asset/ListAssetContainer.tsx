@@ -20,6 +20,7 @@ import {
   ASSET_STATUS_LABEL,
   DEFAULT_FORMAT_DATE,
   LIMIT_LIST,
+  PERMISSION,
 } from "constants/common";
 import ResponsivePagination from "react-responsive-pagination";
 import React, { useEffect, useState } from "react";
@@ -36,6 +37,8 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { AssetStatusTag } from "components/molecules/AssetStatusTag";
 import { RiFileExcel2Fill } from "react-icons/ri";
+import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
+import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
 
 type Props = {};
 
@@ -100,17 +103,19 @@ export default function ListAssetContainer({}: Props) {
 
   return (
     <PaperWrapper label="List Asset">
-      <Button
-        colorScheme="purple"
-        position="absolute"
-        top="24px"
-        right="24px"
-        onClick={() => {
-          navigate("create");
-        }}
-      >
-        Create Asset
-      </Button>
+      <PermissionWrapper permission={PERMISSION.ADD_ASSET}>
+        <Button
+          colorScheme="purple"
+          position="absolute"
+          top="24px"
+          right="24px"
+          onClick={() => {
+            navigate("create");
+          }}
+        >
+          Create Asset
+        </Button>
+      </PermissionWrapper>
       <Flex gap="12px" mb="12px">
         <Select
           focusBorderColor="purple.400"
@@ -150,13 +155,15 @@ export default function ListAssetContainer({}: Props) {
             );
           })}
         </Select>
-        <Button
-          leftIcon={<RiFileExcel2Fill />}
-          colorScheme="purple"
-          onClick={exportData}
-        >
-          Export
-        </Button>
+        <PermissionWrapper permission={PERMISSION.EXPORT_ASSET}>
+          <Button
+            leftIcon={<RiFileExcel2Fill />}
+            colorScheme="purple"
+            onClick={exportData}
+          >
+            Export
+          </Button>
+        </PermissionWrapper>
       </Flex>
       <TableContainer
         border="1px solid var(--gray-02)"
