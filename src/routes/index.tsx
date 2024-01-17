@@ -25,6 +25,10 @@ import ListAssetPage from "pages/asset/ListAssetPage";
 import CreateAssetPage from "pages/asset/CreateAssetPage";
 import UserDetailPage from "pages/user/UserDetailPage";
 import DetailAssetPage from "pages/asset/DetailAssetPage";
+import AuditPage from "pages/audit/AuditPage";
+import { AuditingSessionsPage } from "pages/audit/AuditingSessionsPage";
+import { AuditHistoryPage } from "pages/audit/AuditHistoryPage";
+import { AuditSessionDetailPage } from "pages/audit/AuditSessionDetailPage";
 
 type Props = {};
 
@@ -76,6 +80,13 @@ function MainRoutes({}: Props) {
         <Route path="" element={<ListAssetPage />} />
         <Route path="create" element={<CreateAssetPage />} />
         <Route path=":assetId" element={<DetailAssetPage />} />
+      </Route>
+
+      {/** AUDIT ROUTE */}
+      <Route path="/audit" element={<AuditPage />}>
+        <Route path="" element={<AuditingSessionsPage />} />
+        <Route path="history" element={<AuditHistoryPage />} />
+        <Route path=":sessionId" element={<AuditSessionDetailPage />} />
       </Route>
 
       <Route path="/error/404" element={<NotFoundPage />} />

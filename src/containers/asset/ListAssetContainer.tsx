@@ -1,5 +1,7 @@
 /* eslint-disable no-empty-pattern */
 import {
+  Avatar,
+  AvatarBadge,
   Box,
   Button,
   Flex,
@@ -177,9 +179,6 @@ export default function ListAssetContainer({}: Props) {
                 ID
               </Th>
               <Th fontSize="16px" textAlign="center">
-                Status
-              </Th>
-              <Th fontSize="16px" textAlign="center">
                 Image
               </Th>
               <Th fontSize="16px" textAlign="center">
@@ -223,21 +222,18 @@ export default function ListAssetContainer({}: Props) {
                   }}
                 >
                   <Td>{ele?.id}</Td>
-                  <Td textAlign="center">
-                    <AssetStatusTag
-                      status={
-                        ele?.isAvailable
-                          ? ASSET_STATUS.AVAILABLE
-                          : ASSET_STATUS.NOT_AVAILABLE
-                      }
-                    />
-                  </Td>
                   <Td>
-                    <Img
+                    <Avatar
+                      size="lg"
                       src={
                         ele?.image ? ele?.image : "/images/img-placeholder.jpg"
                       }
-                    />
+                    >
+                      <AvatarBadge
+                        boxSize="1.25em"
+                        bg={ele?.isAvailable ? "green.400" : "red.400"}
+                      />
+                    </Avatar>
                   </Td>
                   <Td textAlign="center">{showData(ele?.name)}</Td>
                   <Td textAlign="center">{showData(ele?.type)}</Td>

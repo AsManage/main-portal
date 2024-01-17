@@ -37,7 +37,7 @@ import { PERMISSION } from "constants/common";
 import { TbPointFilled } from "react-icons/tb";
 import { commonSelector, setClosedList } from "store/common";
 import { TbArrowBackUp } from "react-icons/tb";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoIosPaper, IoMdArrowRoundBack } from "react-icons/io";
 
 interface LinkItemProps {
   name: string;
@@ -149,6 +149,24 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ],
     },
     {
+      name: "Audit",
+      icon: IoIosPaper,
+      path: "/audit",
+      isAllow: true,
+      children: [
+        {
+          name: "Sessions",
+          path: "/audit",
+          isAllow: true,
+        },
+        {
+          name: "History",
+          path: "/audit/history",
+          isAllow: true,
+        },
+      ],
+    },
+    {
       name: "Setting",
       icon: IoSettings,
       path: "/setting",
@@ -199,28 +217,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             ASMANAGE
           </Text>
         </Flex>
-        <Box
-          w="30px"
-          h="30px"
-          borderRadius="25px"
-          bg="purple.400"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <IoMdArrowRoundBack
-            fontSize="20px"
-            cursor="pointer"
-            color="white"
-            onClick={() => {
-              navigate(-1);
-            }}
-          />
-        </Box>
-
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      <Box overflow="auto" h="calc(100% - 130px)">
+      <Box overflow="auto" h="calc(100% - 142px)">
         {LinkItems.map(
           (link) =>
             link.isAllow && (
@@ -265,7 +264,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         colorScheme="purple"
         margin="auto"
         display="block"
-        mb="12px"
+        my="12px"
         variant="outline"
         onClick={handleLogout}
       >

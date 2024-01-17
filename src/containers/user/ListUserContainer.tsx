@@ -1,5 +1,7 @@
 import {
   AlertDialog,
+  Avatar,
+  AvatarBadge,
   Box,
   Button,
   Icon,
@@ -100,15 +102,31 @@ export const ListUserContainer = (props: Props) => {
                     <Th w="100px" fontSize="16px">
                       ID
                     </Th>
-                    <Th fontSize="16px">First name</Th>
-                    <Th fontSize="16px">Last name</Th>
-                    <Th fontSize="16px">Working Position</Th>
-                    <Th fontSize="16px">Email</Th>
-                    <Th fontSize="16px">Phone</Th>
-                    <Th fontSize="16px">Gender</Th>
-                    <Th fontSize="16px">Status</Th>
-                    <Th fontSize="16px">Role</Th>
-                    <Th w="50px" fontSize="16px"></Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Avatar
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      First name
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Last name
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Working Position
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Email
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Phone
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Gender
+                    </Th>
+                    <Th textAlign="center" fontSize="16px">
+                      Role
+                    </Th>
+                    <Th textAlign="center" w="50px" fontSize="16px"></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -122,15 +140,28 @@ export const ListUserContainer = (props: Props) => {
                         }}
                       >
                         <Td>{ele?.id}</Td>
-                        <Td>{showData(ele?.firstName)}</Td>
-                        <Td>{showData(ele?.lastName)}</Td>
-                        <Td>{showData(ele?.workingPosition)}</Td>
-                        <Td>{showData(ele?.email)}</Td>
-                        <Td>{showData(ele?.phoneNumber)}</Td>
-                        <Td>{showData(ele?.gender)}</Td>
-                        <Td>{showData(ele?.status)}</Td>
-                        <Td>{showData(ele?.role)}</Td>
-                        <Td w="50px" fontSize="16px">
+                        <Td textAlign="center">
+                          <Avatar
+                            size="lg"
+                            src={
+                              ele?.image
+                                ? ele?.image
+                                : "/images/img-placeholder.jpg"
+                            }
+                          >
+                            <AvatarBadge boxSize="1.25em" bg={"green.400"} />
+                          </Avatar>
+                        </Td>
+                        <Td textAlign="center">{showData(ele?.firstName)}</Td>
+                        <Td textAlign="center">{showData(ele?.lastName)}</Td>
+                        <Td textAlign="center">
+                          {showData(ele?.workingPosition)}
+                        </Td>
+                        <Td textAlign="center">{showData(ele?.email)}</Td>
+                        <Td textAlign="center">{showData(ele?.phoneNumber)}</Td>
+                        <Td textAlign="center">{showData(ele?.gender)}</Td>
+                        <Td textAlign="center">{showData(ele?.role)}</Td>
+                        <Td textAlign="center" w="50px" fontSize="16px">
                           <PermissionWrapper permission={PERMISSION.EDIT_USER}>
                             <Icon
                               cursor="pointer"

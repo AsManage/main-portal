@@ -1,4 +1,4 @@
-import { As, Flex, FlexProps, Icon, Text } from "@chakra-ui/react";
+import { As, Badge, Flex, FlexProps, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { IconType } from "react-icons";
 

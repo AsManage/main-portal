@@ -19,6 +19,7 @@
     "i18next": "^23.5.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
+    "react-calendar": "^4.8.0",
     "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-folder-tree": "^5.1.1",
