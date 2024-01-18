@@ -7,7 +7,13 @@ import {
   CardBody,
   Flex,
   Link,
+  Table,
+  TableContainer,
+  Tbody,
   Text,
+  Th,
+  Thead,
+  Tr,
   VStack,
 } from "@chakra-ui/react";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
@@ -72,12 +78,29 @@ export default function AuditSessionDetailContainer({}: Props) {
             meaning.
           </Text>
         </Flex>
-        <Card>
-          <CardBody>
-            <Text>
-              View a summary of all your customers over the last month.
-            </Text>
-          </CardBody>
+        <Card w="100%">
+          <TableContainer
+            border="1px solid var(--gray-02)"
+            p="12px"
+            borderRadius="6px"
+          >
+            <Table variant="striped" colorScheme="purple" size="md">
+              <Thead>
+                <Tr>
+                  <Th w="100px" fontSize="16px">
+                    ID
+                  </Th>
+                  <Th w="50px" fontSize="16px">
+                    Image
+                  </Th>
+                  <Th fontSize="16px">Asset Name</Th>
+                  <Th fontSize="16px">Status</Th>
+                  <Th fontSize="16px">Note</Th>
+                </Tr>
+              </Thead>
+              <Tbody></Tbody>
+            </Table>
+          </TableContainer>
         </Card>
       </VStack>
     </PaperWrapper>

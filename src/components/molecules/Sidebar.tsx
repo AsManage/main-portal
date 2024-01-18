@@ -229,14 +229,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                   path={
                     link.children && link.children.length > 0 ? "" : link.path
                   }
-                  isOpen={!closedList.includes(link.name)}
+                  isOpen={closedList.includes(link.name)}
                   haveChild={link.children && link.children.length > 0}
                   onClick={handleAddCloseList(link.name)}
                 >
                   {link.name}
                 </NavItem>
                 {link.children && link.children.length > 0 && (
-                  <Collapse in={!closedList.includes(link.name)} animateOpacity>
+                  <Collapse in={closedList.includes(link.name)} animateOpacity>
                     <Box bg="#f2f2f2" py="16px" mb="6px">
                       {link.children?.map((child) => {
                         return (

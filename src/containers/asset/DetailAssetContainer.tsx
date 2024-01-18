@@ -18,7 +18,7 @@ import {
 import { IconLabelValue } from "components/atoms/IconLabelValue";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { assetSelector, getDetailAssetAction } from "store/asset";
 import { useDispatch, useSelector } from "store/store";
@@ -33,6 +33,7 @@ import AlertConfirm from "components/modal/AlertConfirm";
 import AlertEnsure from "components/modal/AlertEnsure";
 import { PermissionWrapper } from "components/wrapper/PermissionWrapper";
 import { PermissionPageWrapper } from "components/wrapper/PermissionPageWrapper";
+import QRCode from "react-qr-code";
 
 export default function DetailAssetContainer() {
   const { assetId } = useParams();
@@ -42,6 +43,7 @@ export default function DetailAssetContainer() {
     userId: "",
     note: "",
   });
+  const qrRef = useRef<HTMLDivElement>(null);
   const [userIdError, setUserIdError] = useState("");
   const dispatch = useDispatch();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -88,6 +90,30 @@ export default function DetailAssetContainer() {
     }
   };
 
+  const onClickQR = () => {
+    const win = window.open("QR code", "_new");
+    if (win) {
+      win.document.open();
+      win.document.write(
+        [
+          "<html>",
+          "   <head>",
+          "   </head>",
+          '   <body onload="window.print()" onafterprint="window.close()"',
+          `     <div style="width: 500px;height: 500px;margin: auto;">
+                  <h1 style="margin: auto; text-align: center; margin-bottom: 24px;">
+                    ${showData(detailAsset?.name)}
+                  </h1>
+                  ${document.getElementById("qr-asset")?.innerHTML}
+                </div>`,
+          "   </body>",
+          "</html>",
+        ].join("")
+      );
+      win.document.close();
+    }
+  };
+
   useEffect(() => {
     dispatch(getDetailAssetAction({ assetId: assetId || "" }));
     dispatch(getListUserOptionAction());
@@ -113,6 +139,7 @@ export default function DetailAssetContainer() {
           maxHeight="600px"
           overflow="hidden"
           borderRadius="12px"
+          position="relative"
           boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
         >
           <Img
@@ -125,6 +152,35 @@ export default function DetailAssetContainer() {
                 : "/images/img-placeholder.jpg"
             }
           />
+          <Box
+            id="qr-asset"
+            ref={qrRef}
+            maxWidth="100px"
+            width="100px"
+            top="12px"
+            left="12px"
+            position="absolute"
+            borderRadius="6px"
+            boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
+            cursor="pointer"
+            overflow="hidden"
+            transition="0.3s"
+            _hover={{
+              boxShadow:
+                "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;",
+            }}
+            onClick={onClickQR}
+          >
+            <QRCode
+              size={256}
+              style={{
+                height: "100%",
+                width: "100%",
+              }}
+              value={String(assetId)}
+              viewBox={`0 0 256 256`}
+            />
+          </Box>
         </Box>
         <VStack spacing="6px" alignItems="flex-start">
           <IconLabelValue
