@@ -4,16 +4,30 @@ export enum STORAGE_KEY {
 }
 
 export const DEFAULT_FORMAT_DATE = "DD/MM/YYYY";
+export const DEFAULT_FORMAT_DATETIME = "DD/MM/YYYY HH:mm:ss";
 
 export const ASSET_STATUS = {
   AVAILABLE: "AVAILABLE",
   NOT_AVAILABLE: "NOT AVAILABLE",
 };
 
+export const AUDIT_ASSET_STATUS = {
+  WAITING_FOR_AUDIT: "WAITING_FOR_AUDIT",
+  AUDITED: "AUDITED",
+};
+
+
 export const ASSET_STATUS_LABEL = {
   AVAILABLE: "Available",
   NOT_AVAILABLE: "Not Available",
 };
+
+export enum AUDIT_STATUS {
+  UPCOMING = "UPCOMING",
+  AUDITING = "AUDITING",
+  FINISHED = "FINISHED",
+  CANCELED = "CANCELED"
+}
 
 export const LIMIT_LIST = [5, 10, 25, 50, 100];
 

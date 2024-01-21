@@ -1,10 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getDetailAsset,
+  getDetailAuditSession,
   getListAcquisitionSource,
   getListAssetCategory,
   getListAssetPaging,
   getListAssetType,
+  getListAuditSession,
 } from "services/asset.service";
 
 export const getListAssetAction = createAsyncThunk(
@@ -48,6 +50,22 @@ export const getListAssetTypeAction = createAsyncThunk(
   "asset/getListAssetTypeAction",
   async (payload: { categoryId: string | number }) => {
     const response = await getListAssetType(payload);
+    return response.data;
+  }
+);
+
+export const getListAuditSessionAction = createAsyncThunk(
+  "asset/getListAuditSessionAction",
+  async () => {
+    const response = await getListAuditSession();
+    return response.data;
+  }
+);
+
+export const getDetailAuditSessionAction = createAsyncThunk(
+  "asset/getDetailAuditSessionAction",
+  async (sessionId: number) => {
+    const response = await getDetailAuditSession(sessionId);
     return response.data;
   }
 );

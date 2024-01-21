@@ -3,7 +3,3 @@ export interface LoginReq {
   password: string;
 }
 
-export enum AUDIT_STATUS {
-  UPCOMING = "UPCOMING",
-  AUDITING = "AUDITING",
-}

@@ -36,7 +36,10 @@ export const UserDetailContainer = (props: Props) => {
 
   return (
     <Box>
-      <PaperWrapper label="Users" w="100%">
+      <PaperWrapper
+        label={`${userDetail?.firstName} ${userDetail?.lastName}`}
+        w="100%"
+      >
         <Flex gap="24px">
           <Box
             boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"

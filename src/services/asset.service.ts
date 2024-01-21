@@ -78,3 +78,11 @@ export const exportExcel = async () => {
     responseType: "blob",
   });
 };
+
+export const getListAuditSession = async () => {
+  return await centralGW.get("/asset/audit-session");
+};
+
+export const getDetailAuditSession = async (sessionId: number) => {
+  return await centralGW.get(`/asset/audit-session/${sessionId}`);
+};

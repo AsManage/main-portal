@@ -8,21 +8,55 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { AUDIT_STATUS } from "interfaces/auth.interface";
-import React from "react";
+import { AUDIT_STATUS } from "constants/common";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { showData } from "utils/common";
+import { LocalStorage } from "utils/localStorage";
 
 type Props = {
+  name?: string;
   status: AUDIT_STATUS;
   startDate?: string;
   endDate?: string;
   assignee?: string;
   assigner?: string;
+  assigneeId?: number;
+  assignerId?: number;
+  sessionId: number;
 };
 
-export default function AuditCard({ status }: Props) {
+const storage = new LocalStorage();
+
+export default function AuditCard({
+  status,
+  name,
+  startDate,
+  endDate,
+  assignee,
+  assigner,
+  assigneeId,
+  assignerId,
+  sessionId,
+}: Props) {
   const navigate = useNavigate();
+  const userInfo = storage.getStorageItem(storage.availableKey.ACCOUNT_INFO);
+
+  const tabColor = useMemo(() => {
+    switch (status) {
+      case AUDIT_STATUS.UPCOMING:
+        return "blue.400";
+      case AUDIT_STATUS.AUDITING:
+        return "green.400";
+      case AUDIT_STATUS.CANCELED:
+        return "red.400";
+      case AUDIT_STATUS.FINISHED:
+        return "gray.400";
+
+      default:
+        return "gray.400";
+    }
+  }, [status]);
   return (
     <Box
       w="300px"
@@ -37,21 +71,21 @@ export default function AuditCard({ status }: Props) {
           "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;",
       }}
       onClick={() => {
-        navigate("100");
+        navigate(String(sessionId));
       }}
     >
       <Text
         w="100%"
-        bg={status === AUDIT_STATUS.UPCOMING ? "blue.400" : "green.400"}
+        bg={tabColor}
         p="12px"
         textAlign="center"
         color="white"
         fontWeight="bold"
       >
-        {status === AUDIT_STATUS.UPCOMING ? "UPCOMING" : "AUDITING"}
+        {status}
       </Text>
       <VStack p="12px" w="100%">
-        <Text fontWeight="medium">AUDIT 2023</Text>
+        <Text fontWeight="medium">{showData(name)}</Text>
         <Flex
           gap="12px"
           justifyContent="space-between"
@@ -61,7 +95,7 @@ export default function AuditCard({ status }: Props) {
           <Badge ml="1" colorScheme="blue">
             begin
           </Badge>
-          <Text>20/12/2023 23:16:30</Text>
+          <Text>{showData(startDate)}</Text>
         </Flex>
         <Flex
           gap="12px"
@@ -72,7 +106,7 @@ export default function AuditCard({ status }: Props) {
           <Badge ml="1" colorScheme="red">
             Expired
           </Badge>
-          <Text>21/12/2023 23:16:30</Text>
+          <Text>{showData(endDate)}</Text>
         </Flex>
         <Flex
           gap="12px"
@@ -83,8 +117,17 @@ export default function AuditCard({ status }: Props) {
           <Badge ml="1" colorScheme="gray">
             ASSIGNEE
           </Badge>
-          <Link color="purple.400" fontWeight="bold">
-            Nguyen Van A
+          <Link
+            color={userInfo?.id == assigneeId ? "gray.400" : "purple.400"}
+            fontWeight="bold"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (userInfo?.id != assigneeId) {
+                navigate(`/user/${assigneeId}`);
+              }
+            }}
+          >
+            {userInfo?.id == assigneeId ? "YOU" : showData(assignee)}
           </Link>
         </Flex>
         <Flex
@@ -96,8 +139,17 @@ export default function AuditCard({ status }: Props) {
           <Badge ml="1" colorScheme="gray">
             created by
           </Badge>
-          <Link color="purple.400" fontWeight="bold">
-            Nguyen Van B
+          <Link
+            color={userInfo?.id == assignerId ? "gray.400" : "purple.400"}
+            fontWeight="bold"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (userInfo?.id != assignerId) {
+                navigate(`/user/${assignerId}`);
+              }
+            }}
+          >
+            {userInfo?.id == assignerId ? "YOU" : showData(assigner)}
           </Link>
         </Flex>
       </VStack>
