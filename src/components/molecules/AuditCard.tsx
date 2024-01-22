@@ -3,6 +3,7 @@ import {
   AvatarBadge,
   Badge,
   Box,
+  BoxProps,
   Flex,
   Link,
   Text,
@@ -38,7 +39,8 @@ export default function AuditCard({
   assigneeId,
   assignerId,
   sessionId,
-}: Props) {
+  ...nest
+}: Props & BoxProps) {
   const navigate = useNavigate();
   const userInfo = storage.getStorageItem(storage.availableKey.ACCOUNT_INFO);
 
@@ -73,6 +75,7 @@ export default function AuditCard({
       onClick={() => {
         navigate(String(sessionId));
       }}
+      {...nest}
     >
       <Text
         w="100%"

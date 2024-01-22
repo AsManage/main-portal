@@ -86,3 +86,13 @@ export const getListAuditSession = async () => {
 export const getDetailAuditSession = async (sessionId: number) => {
   return await centralGW.get(`/asset/audit-session/${sessionId}`);
 };
+
+export const createAuditSession = async (payload: {
+  name: string;
+  startDate: string;
+  endDate: string;
+  assigneeId: string;
+  note: string;
+}) => {
+  return await centralGW.post(`/asset/audit-session`, payload);
+};
