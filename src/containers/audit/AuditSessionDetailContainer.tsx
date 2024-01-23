@@ -2,6 +2,7 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   Card,
   CardBody,
   Flex,
@@ -15,8 +16,10 @@ import {
   Thead,
   Tr,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
+import AlertConfirm from "components/modal/AlertConfirm";
 import {
   AUDIT_ASSET_STATUS,
   AUDIT_STATUS,
@@ -25,7 +28,10 @@ import {
 import moment from "moment";
 import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDetailAuditSession } from "services/asset.service";
+import {
+  getDetailAuditSession,
+  updateAuditSession,
+} from "services/asset.service";
 import {
   assetSelector,
   getDetailAssetAction,
@@ -45,6 +51,7 @@ export default function AuditSessionDetailContainer({}: Props) {
   const navigate = useNavigate();
   const userInfo = storage.getStorageItem(storage.availableKey.ACCOUNT_INFO);
   const { detailAuditSession } = useSelector(assetSelector);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const tabColor = useMemo(() => {
     switch (detailAuditSession?.status) {
@@ -62,13 +69,22 @@ export default function AuditSessionDetailContainer({}: Props) {
     }
   }, [detailAuditSession?.status]);
 
+  const handleCancelSession = async () => {
+    await updateAuditSession({
+      sessionId: Number(sessionId),
+      status: AUDIT_STATUS.CANCELED,
+    });
+    dispatch(getDetailAuditSessionAction(Number(sessionId)));
+    onClose();
+  };
+
   useEffect(() => {
     dispatch(getDetailAuditSessionAction(Number(sessionId)));
   }, [dispatch, sessionId]);
 
   return (
     <PaperWrapper label={showData(detailAuditSession?.name)}>
-      <VStack spacing="12px">
+      <VStack spacing="12px" alignItems="flex-start">
         <Badge
           fontSize="14px"
           colorScheme={tabColor}
@@ -160,6 +176,15 @@ export default function AuditSessionDetailContainer({}: Props) {
           </Badge>
           <Text>{showData(detailAuditSession?.note)}</Text>
         </Flex>
+
+        <Button
+          colorScheme="red"
+          isDisabled={detailAuditSession?.status !== AUDIT_STATUS.UPCOMING}
+          onClick={onOpen}
+        >
+          Cancel Session
+        </Button>
+
         <Card w="100%">
           <TableContainer
             border="1px solid var(--gray-02)"
@@ -236,6 +261,11 @@ export default function AuditSessionDetailContainer({}: Props) {
           </TableContainer>
         </Card>
       </VStack>
+      <AlertConfirm
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={handleCancelSession}
+      />
     </PaperWrapper>
   );
 }

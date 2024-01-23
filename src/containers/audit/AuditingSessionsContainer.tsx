@@ -1,23 +1,43 @@
 import {
+  Avatar,
+  AvatarBadge,
   Box,
   Button,
+  Checkbox,
   Flex,
   Input,
   Select,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
   Text,
   Textarea,
+  Th,
+  Thead,
+  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
 import { PaperWrapper } from "components/atoms/PaperWrapper";
 import ModalWrapper from "components/modal/ModalWrapper";
 import AuditCard from "components/molecules/AuditCard";
-import { DEFAULT_FORMAT_DATETIME } from "constants/common";
+import {
+  DEFAULT_FORMAT_DATE,
+  DEFAULT_FORMAT_DATETIME,
+  LIMIT_LIST,
+} from "constants/common";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { createAuditSession } from "services/asset.service";
-import { assetSelector, getListAuditSessionAction } from "store/asset";
+import {
+  assetSelector,
+  getListAssetAction,
+  getListAuditSessionAction,
+} from "store/asset";
 import { useDispatch, useSelector } from "store/store";
 import { getListUserOptionAction, userSelector } from "store/user";
+import { formatPrice, showData } from "utils/common";
+import ResponsivePagination from "react-responsive-pagination";
 
 type Props = {};
 
@@ -32,15 +52,21 @@ export default function AuditingSessionsContainer({}: Props) {
     endDate: "",
     assigneeId: "",
     note: "",
+    assets: [],
   });
   const [formDataError, setFormDataError] = useState({
     name: "",
     startDate: "",
     endDate: "",
     assigneeId: "",
+    assets: "",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(LIMIT_LIST[2]);
+  const { listAssetPaging } = useSelector(assetSelector);
 
   const handleSubmit = async () => {
+    console.log(formData);
     const error = { ...formDataError };
     let valid = true;
     if (!formData.name) {
@@ -67,6 +93,12 @@ export default function AuditingSessionsContainer({}: Props) {
     } else {
       error.assigneeId = "";
     }
+    if (formData.assets.length === 0) {
+      error.assets = "At least 1 one asset in audit session";
+      valid = false;
+    } else {
+      error.assets = "";
+    }
     setFormDataError(error);
     if (valid) {
       await createAuditSession({
@@ -77,6 +109,28 @@ export default function AuditingSessionsContainer({}: Props) {
     }
   };
 
+  const handleChangeCurrentPage = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeLimit = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLimit(Number(e.target.value));
+  };
+
+  const handleSelectAsset = (id: number) => {
+    if ((formData.assets as any).includes(id)) {
+      setFormData({
+        ...formData,
+        assets: formData.assets.filter((ele) => ele != id),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        assets: (formData.assets as any).concat([id]),
+      });
+    }
+  };
+
   const handleClose = () => {
     setFormData({
       name: "",
@@ -84,15 +138,26 @@ export default function AuditingSessionsContainer({}: Props) {
       endDate: "",
       assigneeId: "",
       note: "",
+      assets: [],
     });
     setFormDataError({
       name: "",
       startDate: "",
       endDate: "",
       assigneeId: "",
+      assets: "",
     });
     onClose();
   };
+
+  useEffect(() => {
+    dispatch(
+      getListAssetAction({
+        limit: limit,
+        page: currentPage,
+      })
+    );
+  }, [currentPage, dispatch, limit]);
 
   useEffect(() => {
     dispatch(getListAuditSessionAction());
@@ -142,6 +207,7 @@ export default function AuditingSessionsContainer({}: Props) {
         onClose={handleClose}
         isOpen={isOpen}
         onSubmit={handleSubmit}
+        size="full"
       >
         <Flex flexDirection="column" gap="12px">
           <Box>
@@ -257,6 +323,92 @@ export default function AuditingSessionsContainer({}: Props) {
                   note: e.target.value,
                 });
               }}
+            />
+          </Box>
+          {formDataError.assets && (
+            <Text className="error-message">{formDataError.assets}</Text>
+          )}
+          <TableContainer
+            border="1px solid var(--gray-02)"
+            p="12px"
+            borderRadius="6px"
+          >
+            <Table variant="striped" colorScheme="purple" size="md">
+              <Thead>
+                <Tr>
+                  <Th w="100px" fontSize="16px"></Th>
+                  <Th w="100px" fontSize="16px">
+                    ID
+                  </Th>
+                  <Th fontSize="16px" textAlign="center">
+                    Image
+                  </Th>
+                  <Th fontSize="16px" textAlign="center">
+                    Asset Name
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {listAssetPaging?.result?.map((ele: any) => {
+                  return (
+                    <Tr
+                      key={ele?.id}
+                      cursor="pointer"
+                      _hover={{
+                        transition: "0.2s",
+                        position: "relative",
+                        zIndex: 100,
+                        boxShadow:
+                          "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                      }}
+                    >
+                      <Td>
+                        <Checkbox
+                          colorScheme="purple"
+                          checked={(formData.assets as any).includes(ele?.id)}
+                          onChange={() => {
+                            handleSelectAsset(ele?.id);
+                          }}
+                        />
+                      </Td>
+                      <Td>{ele?.id}</Td>
+                      <Td>
+                        <Avatar
+                          size="lg"
+                          src={
+                            ele?.image
+                              ? ele?.image
+                              : "/images/img-placeholder.jpg"
+                          }
+                        >
+                          <AvatarBadge
+                            boxSize="1.25em"
+                            bg={ele?.isAvailable ? "green.400" : "red.400"}
+                          />
+                        </Avatar>
+                      </Td>
+                      <Td textAlign="center">{showData(ele?.name)}</Td>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
+          <Box pt={3} display="flex" justifyContent="flex-end">
+            <Select value={limit} onChange={handleChangeLimit} width="100px">
+              {LIMIT_LIST.map((ele, idx) => {
+                return (
+                  <option key={idx} value={ele}>
+                    {ele}
+                  </option>
+                );
+              })}
+            </Select>
+            <ResponsivePagination
+              maxWidth={400}
+              current={currentPage}
+              total={Math.ceil(listAssetPaging?.total / limit)}
+              onPageChange={handleChangeCurrentPage}
             />
           </Box>
         </Flex>

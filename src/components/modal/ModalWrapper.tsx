@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  ModalProps,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -24,14 +25,14 @@ export default function ModalWrapper({
   onClose = () => {},
   onSubmit = () => {},
   children,
-}: Props) {
+  ...rest
+}: Props & ModalProps) {
   return (
-    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
+    <Modal size="xl" isOpen={isOpen} onClose={onClose} {...rest}>
+      <ModalContent overflow="auto" h="100vh">
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody maxH="90vh" overflow="auto">
+        <ModalBody overflow="auto" h="calc(100% - 100px)">
           {children}
         </ModalBody>
 

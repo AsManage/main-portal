@@ -93,6 +93,14 @@ export const createAuditSession = async (payload: {
   endDate: string;
   assigneeId: string;
   note: string;
+  assets: number[];
 }) => {
   return await centralGW.post(`/asset/audit-session`, payload);
+};
+
+export const updateAuditSession = async (payload: {
+  status: string;
+  sessionId: number
+}) => {
+  return await centralGW.put(`/asset/audit-session`, payload);
 };
